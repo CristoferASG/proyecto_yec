@@ -1,0 +1,87 @@
+
+<p>institution-form works!</p>
+
+<!-- General Info -->
+<label>Nombre</label>
+<input pInputText [formField]="form.generalInfo.name"/>
+<small [appErrorMessage]="$any(form.generalInfo.name)"></small>
+<br>
+
+<label>Denominación</label>
+<input pInputText [formField]="form.generalInfo.denomination"/>
+<small [appErrorMessage]="$any(form.generalInfo.denomination)"></small>
+<br>
+
+<label>Nombre Corto</label>
+<input pInputText [formField]="form.generalInfo.shortName"/>
+<small [appErrorMessage]="$any(form.generalInfo.shortName)"></small>
+
+<hr>
+
+<!-- Contact Info -->
+<label>Celular</label>
+<input pInputText [formField]="form.contactInfo.cellphone"/>
+<small [appErrorMessage]="$any(form.contactInfo.cellphone)"></small>
+<br>
+
+<label>Teléfono</label>
+<input pInputText [formField]="form.contactInfo.phone"/>
+<small [appErrorMessage]="$any(form.contactInfo.phone)"></small>
+<br>
+
+<label>Email</label>
+<input pInputText [formField]="form.contactInfo.email"/>
+<small [appErrorMessage]="$any(form.contactInfo.email)"></small>
+<br>
+
+<label>Web</label>
+<input pInputText [formField]="form.contactInfo.web"/>
+<small [appErrorMessage]="$any(form.contactInfo.web)"></small>
+
+<hr>
+
+<!-- Configuration Info -->
+<label>Logo</label>
+<input pInputText [formField]="form.configurationInfo.logo"/>
+<small [appErrorMessage]="$any(form.configurationInfo.logo)"></small>
+<br>
+
+<label>Estado</label>
+<select [formField]="$any(form.configurationInfo.state)">
+  <option value="">Seleccione</option>
+  @for (state of statesOptions(); track state.id) {
+    <option [value]="state.id">{{ state.name }}</option>
+  }
+</select>
+<small [appErrorMessage]="$any(form.configurationInfo.state)"></small>
+<br>
+
+<label>Visible</label>
+<p-inputSwitch [formField]="form.configurationInfo.isVisible"/>
+<small [appErrorMessage]="$any(form.configurationInfo.isVisible)"></small>
+
+<hr>
+
+<!-- Institutional Info -->
+<label>Código</label>
+<input pInputText [formField]="form.institutionalInfo.code"/>
+<small [appErrorMessage]="$any(form.institutionalInfo.code)"></small>
+<br>
+
+<label>Código SNIESE</label>
+<input pInputText [formField]="form.institutionalInfo.codeSniese"/>
+<small [appErrorMessage]="$any(form.institutionalInfo.codeSniese)"></small>
+<br>
+
+<label>Siglas</label>
+<input pInputText [formField]="form.institutionalInfo.acronym"/>
+<small [appErrorMessage]="$any(form.institutionalInfo.acronym)"></small>
+<br>
+
+<label>Slogan</label>
+<input pInputText [formField]="form.institutionalInfo.slogan"/>
+<small [appErrorMessage]="$any(form.institutionalInfo.slogan)"></small>
+
+<hr>
+
+<p-button label="Save" (onClick)="save()"/>
