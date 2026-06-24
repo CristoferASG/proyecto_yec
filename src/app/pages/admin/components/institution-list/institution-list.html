@@ -1,0 +1,95 @@
+<div class="card">
+
+  <div class="flex justify-content-between align-items-center mb-4">
+
+    <h2 class="m-0">
+      Instituciones
+    </h2>
+
+    <p-button
+      label="Nueva Institución"
+      icon="pi pi-plus"
+      (onClick)="createInstitution()">
+    </p-button>
+
+  </div>
+
+  <p-table
+    [value]="institutions()"
+    responsiveLayout="scroll">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre</th>
+        <th>Denominación</th>
+        <th>Nombre Corto</th>
+        <th>Código</th>
+        <th>Estado</th>
+        <th>Visible</th>
+        <th style="width:150px">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template
+      pTemplate="body"
+      let-item>
+
+      <tr>
+
+        <td>{{ item.generalInfo.name }}</td>
+
+        <td>{{ item.generalInfo.denomination }}</td>
+
+        <td>{{ item.generalInfo.shortName }}</td>
+
+        <td>{{ item.institutionalInfo.code }}</td>
+
+        <td>{{ item.configurationInfo.state }}</td>
+
+        <td>
+          {{ item.configurationInfo.isVisible ? 'Sí' : 'No' }}
+        </td>
+
+        <td>
+
+          <div class="flex gap-2">
+
+            <p-button
+              icon="pi pi-pencil"
+              severity="info"
+              [text]="true"
+              (onClick)="editInstitution(item)">
+            </p-button>
+
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [text]="true"
+              (onClick)="deleteInstitution(item.id)">
+            </p-button>
+
+          </div>
+
+        </td>
+
+      </tr>
+
+    </ng-template>
+
+  </p-table>
+
+</div>
+
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '70rem' }"
+  [draggable]="false"
+  [resizable]="false">
+
+  <app-institution-form
+    [data]="editingData() ?? undefined"
+    (saveForm)="saveInstitution($event)">
+  </app-institution-form>
+
+</p-dialog>
