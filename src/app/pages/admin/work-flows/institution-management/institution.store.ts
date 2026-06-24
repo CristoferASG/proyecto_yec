@@ -8,6 +8,8 @@ import {
   INSTITUTION_FORM_INITIAL_STATE
 } from "./institution.state";
 
+import { InstitutionEntity } from '@/pages/admin/components/models/institution.model';
+
 @Injectable({ providedIn: 'root' })
 export class InstitutionStore {
   // Estado principal del formulario usando Signal
@@ -25,6 +27,7 @@ export class InstitutionStore {
   readonly contactInfo = computed(() => this.formState().contactInfo);
   readonly configurationInfo = computed(() => this.formState().configurationInfo);
   readonly institutionalInfo = computed(() => this.formState().institutionalInfo);
+  readonly institutions = signal<InstitutionEntity[]>([]);
 
   // Métodos de actualización por sección
   updateGeneralInfo(data: Partial<GeneralInfo>) {
@@ -54,6 +57,43 @@ export class InstitutionStore {
       institutionalInfo: { ...state.institutionalInfo, ...data }
     }));
   }
+
+  create(data: InstitutionState): void {
+
+  const newInstitution: InstitutionEntity = {
+    id: crypto.randomUUID(),
+    ...structuredClone(data)
+  };
+
+  this.institutions.update(items => [
+    ...items,
+    newInstitution
+  ]);
+}
+
+delete(id: string): void {
+
+  this.institutions.update(items =>
+    items.filter(item => item.id !== id)
+  );
+}
+  
+update(
+  id: string,
+  data: InstitutionState
+): void {
+
+  this.institutions.update(items =>
+    items.map(item =>
+      item.id === id
+        ? {
+            ...item,
+            ...structuredClone(data)
+          }
+        : item
+    )
+  );
+}
 
   // Cargar datos completos (útil para edición)
   loadInstitution(data: InstitutionState) {
