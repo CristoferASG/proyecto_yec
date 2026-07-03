@@ -1,5 +1,6 @@
 import {computed, Injectable, Signal, signal} from "@angular/core";
-import {SignUpState, INITIAL_STATE, UserI} from "./sign-up.state";
+import {SignUpState, INITIAL_STATE, UserI, SecurityQuestionI} from "./sign-up.state";
+import {isArray} from "chart.js/helpers";
 
 const FORM_STATE_KEY = 'formState';
 
@@ -9,18 +10,36 @@ export class SignUpStore {
     readonly formErrors = signal<Record<string, string[]>>({});
 
     readonly user: Signal<UserI> = computed(() => this.formState().user);
+    readonly securityQuestions: Signal<SecurityQuestionI[]> = computed(() => this.formState().securityQuestions);
 
 
     updateSection<K extends keyof SignUpState>(
         section: K,
         data: Partial<SignUpState[K]>
     ) {
+        if (isArray(data)) {
+            this.formState.update(state => ({
+                ...state,
+                [section]: data
+            }));
+        } else {
+            this.formState.update(state => ({
+                ...state,
+                [section]: {
+                    ...state[section],
+                    ...data
+                }
+            }));
+        }
+    }
+
+    setSection<K extends keyof SignUpState>(
+        section: K,
+        data: SignUpState[K]
+    ) {
         this.formState.update(state => ({
             ...state,
-            [section]: {
-                ...state[section],
-                ...data
-            }
+            [section]: data
         }));
     }
 

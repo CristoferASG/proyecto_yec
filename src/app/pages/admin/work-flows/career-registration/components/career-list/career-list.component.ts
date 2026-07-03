@@ -13,6 +13,12 @@ import {InputText} from "primeng/inputtext";
 import {InputGroup} from "primeng/inputgroup";
 import {Paginator, PaginatorState} from "primeng/paginator";
 import {INITIAL_PAGINATION, PaginationInterface} from "@utils/interfaces";
+import {ButtonActionComponent} from "@utils/components/button-action/button-action.component";
+import {MenuItem} from "primeng/api";
+import {Tooltip} from "primeng/tooltip";
+import {registrationButtonAction} from "@utils/components/button-action/consts";
+import {Router} from "@angular/router";
+import {MY_ROUTES} from "@routes";
 
 @Component({
     selector: 'app-career-list',
@@ -21,20 +27,25 @@ import {INITIAL_PAGINATION, PaginationInterface} from "@utils/interfaces";
         TableModule,
         InputText,
         InputGroup,
-        Paginator
+        Paginator,
+        ButtonActionComponent,
+        Tooltip
     ],
     templateUrl: './career-list.component.html'
 })
 export class CareerListComponent implements OnInit {
     private readonly formRegistryService = inject(FormRegistryService);
-    private readonly customMessageService = inject(CustomMessageService);
     protected readonly careerCreateStore = inject(CareerRegistrationStore);
+    private readonly router = inject(Router);
+    private readonly customMessageService = inject(CustomMessageService);
     protected readonly careerRegistrationService = inject(CareerRegistrationService);
     protected readonly CustomIcons = CustomIcons;
 
     protected items = signal<CareerInterface[]>([]);
     protected search = signal('');
     protected pagination = signal<PaginationInterface>(INITIAL_PAGINATION);
+    protected buttonActions = signal<MenuItem[]>([]);
+    protected isButtonActionsEnabled: boolean = false;
 
     ngOnInit(): void {
         this.loadItems();
@@ -115,7 +126,7 @@ export class CareerListComponent implements OnInit {
         ])
     }
 
-    async onSubmit() {
+    onSubmit() {
         if (this.formRegistryService.hasErrors()) {
             this.customMessageService.showFormErrors(this.formRegistryService.errors());
             return;
@@ -134,8 +145,49 @@ export class CareerListComponent implements OnInit {
         });
     }
 
+    buildButtonActions(item: any, index: number) {
+        const actions: MenuItem[] = [];
+
+        actions.push({
+            ...registrationButtonAction,
+            command: () => this.goToCreate(item)
+        });
+
+        actions.push({
+            ...registrationButtonAction,
+            command: () => this.goToCreate(item)
+        });
+
+        actions.push({
+            ...registrationButtonAction,
+            command: () => this.goToCreate(item)
+        });
+
+        actions.push({
+            ...registrationButtonAction,
+            command: () => this.goToCreate(item)
+        });
+
+        actions.push({
+            ...registrationButtonAction,
+            command: () => this.goToCreate(item)
+        });
+
+
+        this.buttonActions.set(actions);
+    }
+
+    goToCreate(item: any) {
+        this.router.navigate([MY_ROUTES.adminPages.user.form.absolute]);
+    }
+
     findCareers(page = 1, search = null) {
 
+    }
+
+    onSelect({item, index}: { item: any; index: number }) {
+        this.isButtonActionsEnabled = true;
+        this.buildButtonActions(item, index);
     }
 
     onPageChange(paginatorState: PaginatorState) {

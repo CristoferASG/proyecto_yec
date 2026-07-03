@@ -11,16 +11,17 @@
                 [routerLink]="[MY_ROUTES.authPages.signIn.absolute]"/>
         </div>
 
-        <!-- title -->
-        <div class="custom-form-title md:col-span-12  text-center">
+        <!-- section -->
+        <div class="custom-form-section md:col-span-12 text-center">
             Creación de la Cuenta
         </div>
 
         <!-- identificationField -->
         <div class="custom-form-field md:col-span-12">
             <label
-                appLabel for="identification"
-                label="Número de RUC al que pertenece el Establecimiento"
+                appLabel
+                for="identification"
+                label="Número de cédula"
                 [field]="formData.identification"></label>
 
             <input pInputText type="text" id="identification" [formField]="formData.identification" pKeyFilter="pint"/>
@@ -34,7 +35,6 @@
                 </p-message>
             }
         </div>
-
 
         <!-- emailField -->
         <div class="custom-form-field md:col-span-12">
@@ -134,34 +134,21 @@
                 </small>
             </div>
 
-            <!-- securityQuestionsField -->
-                <!--            <div formArrayName="securityQuestions" class="custom-form-field md:col-span-12">-->
-                <!--                @for (securityQuestion of securityQuestionsField.controls; track $index) {-->
-                <!--                    <div [formGroupName]="$index" class="custom-form-field md:col-span-12">-->
-                <!--                        <label-->
-                <!--                            appLabel-->
-                <!--                            [for]="$index"-->
-                <!--                            [required]="securityQuestion.get('answer')">-->
-                <!--                            {{ securityQuestion.get('question')?.value }}-->
-                <!--                        </label>-->
+            @for (securityQuestion of securityQuestionForms; track $index) {
+                <div class="custom-form-field">
+                    <label>
+                        {{ securityQuestion.question().value().name }}
+                    </label>
 
-                <!--                        <p-password-->
-                <!--                            [id]="$index"-->
-                <!--                            [formControl]="$any(securityQuestion.get('answer'))"-->
-                <!--                            inputStyleClass="w-full"-->
-                <!--                            [toggleMask]="true"-->
-                <!--                            [feedback]="false"/>-->
+                    <input pInputText [formField]="securityQuestion.answer"/>
 
-                <!--                        <small-->
-                <!--                            appErrorMessage-->
-                <!--                            [errors]="securityQuestion.get('answer')?.errors"-->
-                <!--                            [touched]="securityQuestion.get('answer')?.touched"-->
-                <!--                            [dirty]="securityQuestion.get('answer')?.dirty"></small>-->
-                <!--                    </div>-->
-                <!--                }-->
-                <!--            </div>-->
+                    <small [appErrorMessage]="$any(securityQuestion.answer)"></small>
+                </div>
+            }
 
-                <!-- termsAcceptedAtField -->
+            {{securityQuestionForms.length | json}}
+
+            <!-- termsAcceptedAtField -->
             <div class="custom-form-field md:col-span-12">
                 <div class="flex items-center">
                     <p-checkbox

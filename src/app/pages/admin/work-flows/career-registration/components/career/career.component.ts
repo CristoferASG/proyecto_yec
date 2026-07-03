@@ -12,6 +12,8 @@ import {
 } from "@modules/admin/work-flows/career-registration/components/principla-data/principal-data.component";
 import {FormRegistryService} from "@utils/services/form-registry.service";
 import {CustomIcons} from "@utils/icons/custom-icons";
+import {BreadcrumbService} from "@layout/service/breadcrumb.service";
+import {MY_ROUTES} from "@routes";
 
 @Component({
     selector: 'app-career',
@@ -24,11 +26,19 @@ import {CustomIcons} from "@utils/icons/custom-icons";
     templateUrl: './career.component.html'
 })
 export class CareerComponent {
+    private readonly BreadcrumbService = inject(BreadcrumbService);
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly customMessageService = inject(CustomMessageService);
     protected readonly careerCreateStore = inject(CareerRegistrationStore);
     protected readonly careerRegistrationService = inject(CareerRegistrationService);
     protected readonly CustomIcons = CustomIcons;
+
+    constructor() {
+        this.BreadcrumbService.setItems([{
+            label: 'Listado de Carreras',
+            routerLink: MY_ROUTES.adminPages.user.absolute
+        }]);
+    }
 
     async onSubmit() {
         if (this.formRegistryService.hasErrors()) {

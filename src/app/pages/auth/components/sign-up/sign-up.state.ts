@@ -2,6 +2,7 @@ import {CatalogueInterface} from "@utils/interfaces";
 
 export interface SignUpState {
     user: UserI;
+    securityQuestions: SecurityQuestionI[];
 }
 
 export interface UserI {
@@ -12,7 +13,6 @@ export interface UserI {
     name: string;
     username: string;
     termsAcceptedAt: boolean;
-    securityQuestions: SecurityQuestionI | null;
 }
 
 export interface SecurityQuestionI {
@@ -30,6 +30,6 @@ export const INITIAL_STATE: SignUpState = {
         name: '',
         username: '',
         termsAcceptedAt: false,
-        securityQuestions: null,
-    }
+    },
+    securityQuestions: [],
 };

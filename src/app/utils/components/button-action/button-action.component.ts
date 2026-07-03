@@ -11,7 +11,6 @@ import { Divider } from 'primeng/divider';
 @Component({
     selector: 'app-button-action',
     templateUrl: './button-action.component.html',
-    styleUrls: ['./button-action.component.scss'],
     imports: [Drawer, PanelMenu, Divider],
     standalone: true
 })

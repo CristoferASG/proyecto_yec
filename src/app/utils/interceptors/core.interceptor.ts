@@ -6,7 +6,7 @@ import { CustomMessageService } from '@utils/services';
 
 export const coreInterceptor: HttpInterceptorFn = (req, next) => {
     let flag: boolean | undefined = false;
-    const coreService = inject(AppService);
+    const appService = inject(AppService);
     const customMessageService = inject(CustomMessageService);
     let headers = req.headers ? req.headers : new HttpHeaders();
     let params = req.params ? req.params : new HttpParams();
@@ -25,8 +25,8 @@ export const coreInterceptor: HttpInterceptorFn = (req, next) => {
     //     headers = headers.append('Content-Type', 'application/json');
     // }
 
-    coreService.showLoading();
-    coreService.showProcessing();
+    appService.showLoading();
+    appService.showProcessing();
 
     return next(req.clone({ headers, params })).pipe(
         tap({
@@ -50,8 +50,8 @@ export const coreInterceptor: HttpInterceptorFn = (req, next) => {
             }
         }),
         finalize(() => {
-            coreService.hideLoading();
-            coreService.hideProcessing();
+            appService.hideLoading();
+            appService.hideProcessing();
         })
     );
 };

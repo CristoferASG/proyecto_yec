@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, inject, OnInit, resource, signal, WritableSignal} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterModule} from '@angular/router';
 import {ButtonModule} from 'primeng/button';
@@ -23,11 +23,13 @@ import {TransactionalCodeComponent} from '@utils/components/transactional-code/t
 import {CatalogueInterface} from '@utils/interfaces';
 import {Message} from 'primeng/message';
 import {AutoFocus} from 'primeng/autofocus';
-import {FieldTree, form, FormField, SchemaPathTree} from "@angular/forms/signals";
+import {FieldTree, form, FormField, required, SchemaPathTree, validate} from "@angular/forms/signals";
 import {SignUpStore} from "@modules/auth/components/sign-up/sign-up.store";
 import {signUpValidation} from "@modules/auth/components/sign-up/sign-up.validation";
-import {UserI} from "@modules/auth/components/sign-up/sign-up.state";
+import {SecurityQuestionI, UserI} from "@modules/auth/components/sign-up/sign-up.state";
 import {InputGroup} from "primeng/inputgroup";
+import {firstValueFrom} from "rxjs";
+import {JsonPipe} from "@angular/common";
 
 @Component({
     selector: 'app-sign-up',
@@ -51,23 +53,30 @@ import {InputGroup} from "primeng/inputgroup";
         Message,
         AutoFocus,
         FormField,
-        InputGroup
+        InputGroup,
+        JsonPipe
     ]
 })
 export default class SignUpComponent implements OnInit {
+    private readonly FORM_STATE_KEY = 'user';
+
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly formStore = inject(SignUpStore);
-    protected readonly form$: WritableSignal<UserI> = signal(this.formStore.user());
+    protected readonly formData$: WritableSignal<UserI> = signal<UserI>(this.formStore.user());
     protected readonly formData: FieldTree<UserI> = this.buildForm;
-    private readonly FORM_STATE_KEY = 'user';
+    protected readonly securityQuestions$: WritableSignal<SecurityQuestionI[]> = signal<SecurityQuestionI[]>(this.formStore.securityQuestions());
+    protected securityQuestionForms: FieldTree<SecurityQuestionI>[] = [];
+
     protected transactionalCodeControl = form(signal(''));
+
+    private readonly authHttpService = inject(AuthHttpService);
+
     protected readonly showPasswordConfirm = signal(false);
     protected readonly showPassword = signal(false);
-
+    protected allSecurityQuestions = signal<CatalogueInterface[]>([]);
 
     async ngOnInit() {
         await this.loadSecurityQuestions();
-        const test =this.formData.passwordConfirm
     }
 
     ngOnDestroy(): void {
@@ -75,7 +84,7 @@ export default class SignUpComponent implements OnInit {
     }
 
     get buildForm() {
-        return form<UserI>(this.form$, (schema) => {
+        return form<UserI>(this.formData$, (schema) => {
             signUpValidation(schema)
         });
     }
@@ -83,12 +92,11 @@ export default class SignUpComponent implements OnInit {
     protected readonly environment = environment;
     protected readonly MY_ROUTES = MY_ROUTES;
     protected readonly CustomIcons = CustomIcons;
-    protected allSecurityQuestions: CatalogueInterface[] = [];
+
     private readonly customMessageService = inject(CustomMessageService);
     protected readonly appService = inject(AppService);
     private readonly catalogueHttpService = inject(CatalogueHttpService);
     private readonly catalogueService = inject(CatalogueService);
-    private readonly authHttpService = inject(AuthHttpService);
     private readonly router = inject(Router);
 
     constructor() {
@@ -96,33 +104,56 @@ export default class SignUpComponent implements OnInit {
     }
 
     protected async loadSecurityQuestions() {
-        this.catalogueHttpService.findCache().subscribe({
-            next: async (response) => {
-                await this.appService.setEncryptedValue(CoreEnum.catalogues, response);
+        this.allSecurityQuestions.set(this.catalogueService.findByType(CatalogueTypeEnum.users_security_question));
 
-                this.allSecurityQuestions = await this.catalogueService.findByType(CatalogueTypeEnum.users_security_question);
-            }
-        });
+        this.allSecurityQuestions.set([
+            {id: '1', code: '1', name: 'Pregunta 1'},
+            {id: '2', code: '2', name: 'Pregunta 2'},
+            {id: '3', code: '3', name: 'Pregunta 3'},
+            {id: '4', code: '4', name: 'Pregunta 4'},
+            {id: '5', code: '5', name: 'Pregunta 5'},
+            {id: '6', code: '6', name: 'Pregunta 6'},
+            {id: '7', code: '7', name: 'Pregunta 7'},
+            {id: '8', code: '8', name: 'Pregunta 8'},
+            {id: '9', code: '9', name: 'Pregunta 9'},
+            {id: '10', code: '10', name: 'Pregunta 10'},
+        ]);
+
+        this.generateSecurityQuestions();
     }
 
     protected generateSecurityQuestions() {
-        const selectedSecurityQuestions = this.allSecurityQuestions.sort(() => Math.random() - 0.5).slice(0, 3);
+        const selectedSecurityQuestions = this.allSecurityQuestions().sort(() => Math.random() - 0.5).slice(0, 3);
 
-        selectedSecurityQuestions.forEach((q) => this.addQuestion(q));
+        this.addQuestions(selectedSecurityQuestions)
+    }
+
+    protected addQuestions(questions: CatalogueInterface[]): void {
+        const securityQuestions = questions.map(question => ({
+            code: question.code!,
+            question: question,
+            answer: ''
+        }))
+
+        if (questions.length > 0) {
+            this.formStore.updateSection('securityQuestions', securityQuestions);
+            this.securityQuestions$.set(securityQuestions);
+            this.securityQuestionForms = securityQuestions.map(question => {
+                const questionSignal = signal(question);
+
+                return form(questionSignal, schema => {
+                    required(schema.answer, {
+                        message: 'Campo obligatorio'
+                    });
+                });
+            });
+
+            console.log(this.securityQuestionForms);
+        }
     }
 
     protected openTerms() {
         window.open(`${environment.APP_PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
-    }
-
-    protected addQuestion(question: any): void {
-        // const group = this.formBuilder.group({
-        //     code: [question.code, Validators.required],
-        //     question: [question.name, Validators.required],
-        //     answer: [null, Validators.required]
-        // });
-
-        // this.securityQuestionsField.push(group);
     }
 
     // protected watchFormChanges() {
@@ -181,12 +212,22 @@ export default class SignUpComponent implements OnInit {
         });
     }
 
-    togglePassword(){
+    protected togglePassword() {
         this.showPassword.update(value => !value);
     }
 
-    togglePasswordConfirm(){
+    protected togglePasswordConfirm() {
         this.showPasswordConfirm.update(value => !value);
+    }
+
+    protected findEmailExists(email: string): void {
+        this.authHttpService.verifyEmailExist(email).subscribe(
+            {
+                next: (response) => {
+                    console.log(response);
+                }
+            }
+        )
     }
 
     // private validateForm() {
