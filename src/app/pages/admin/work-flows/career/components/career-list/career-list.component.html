@@ -7,13 +7,19 @@
     <ng-template #caption>
         <div class="custom-form-grid">
             <div class="custom-form-grid md:grid-cols-12">
-                <div class="custom-form-field md:col-span-9">
+                <div class="custom-form-field md:col-span-8">
                     <h2>Listado de Carreras</h2>
                 </div>
 
-                <div class="custom-form-field md:col-span-3">
+                <div class="custom-form-field md:col-span-4">
                     <p-input-group>
-                        <input pInputText type="text" placeholder="Search keyword"/>
+                        <input
+                            pInputText
+                            type="text"
+                            [value]="search()"
+                            (input)="onSearchInput($event)"
+                            placeholder="Search keyword"/>
+
                         <p-button [icon]="CustomIcons.MAGNIFYING_GLASS_SOLID"></p-button>
                     </p-input-group>
                 </div>
@@ -24,7 +30,7 @@
                     <p-button label="Acción 3" [icon]="CustomIcons.FILE_AUDIO_SOLID" severity="info"/>
                 </div>
 
-                <div class="custom-form-field-row md:col-span-12">
+                <div class="custom-form-field md:col-span-12">
                     <p-paginator
                         (onPageChange)="onPageChange($event)"
                         [rows]="pagination().limit"
@@ -40,7 +46,14 @@
             <th>Shortname</th>
             <th>Logo</th>
             <th>Resolution Number</th>
-            <th></th>
+            <th>
+                <p-button
+                    pTooltip="Crear"
+                    [icon]="CustomIcons.PLUS_SOLID"
+                    severity="success"
+                    (onClick)="goToCreate()"
+                />
+            </th>
         </tr>
     </ng-template>
 
@@ -69,7 +82,7 @@
 
     <ng-template #footer>
         <tr>
-            <td colspan="6">En total existen {{ items() ? items().length : 0 }} items.</td>
+            <td colspan="6">En total existen {{ items() ? pagination().totalItems : 0 }} items.</td>
         </tr>
     </ng-template>
 </p-table>

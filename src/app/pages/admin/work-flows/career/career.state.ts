@@ -1,4 +1,4 @@
-export interface CareerRegistrationState {
+export interface CareerState {
     principalData: PrincipalData;
     secondaryData: SecondaryData;
 }
@@ -24,6 +24,7 @@ export interface CareerInterface {
     shortName: string;
     logo: string;
     resolutionNumber: string;
+    isEnabled: boolean;
 }
 
 interface InstitutionInterface {
@@ -31,7 +32,7 @@ interface InstitutionInterface {
     name: string;
 }
 
-export const INITIAL_STATE: CareerRegistrationState = {
+export const INITIAL_STATE: CareerState = {
     principalData: {
         code: '',
         name: '',
@@ -46,4 +47,16 @@ export const INITIAL_STATE: CareerRegistrationState = {
         resolutionNumber: '',
         institution: null
     },
+};
+
+export const PRINCIPAL_DATA_KEYS = ['code', 'name', 'degree', 'acronym'] as const satisfies (keyof PrincipalData)[];
+export const SECONDARY_DATA_KEYS = ['code', 'shortName', 'logo', 'resolutionNumber'] as const satisfies (keyof SecondaryData)[];
+
+type SectionKeysMap = {
+    [K in keyof CareerState]: readonly (keyof CareerState[K])[];
+};
+
+export const SECTION_KEYS: SectionKeysMap = {
+    principalData: PRINCIPAL_DATA_KEYS,
+    secondaryData: SECONDARY_DATA_KEYS,
 };

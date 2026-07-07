@@ -13,12 +13,12 @@
                 appLabel
                 for="code"
                 label="Code"
-                [field]="codeField">
+                [field]="formData.code">
             </label>
-            {{ codeField().value() |json }}
-            <input pInputText id="code" [formField]="codeField">
 
-            <small [appErrorMessage]="$any(codeField)"></small>
+            <input pInputText id="code" [formField]="formData.code">
+
+            <small [appErrorMessage]="$any(formData.code)"></small>
         </div>
 
         <!-- name -->
@@ -27,12 +27,12 @@
                 appLabel
                 for="name"
                 label="Name"
-                [field]="nameField">
+                [field]="formData.name">
             </label>
 
-            <input pInputText id="name" [formField]="nameField">
+            <input pInputText id="name" [formField]="formData.name">
 
-            <small [appErrorMessage]="$any(nameField)"></small>
+            <small [appErrorMessage]="$any(formData.name)"></small>
         </div>
     </form>
 </div>
