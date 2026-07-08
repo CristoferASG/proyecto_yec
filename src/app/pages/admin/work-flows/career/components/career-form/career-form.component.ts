@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit} from '@angular/core';
+import {Component, inject, input, InputSignal, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
 import {FormRegistryService} from "@utils/services/form-registry.service";
 import {JsonPipe} from "@angular/common";
@@ -25,7 +25,7 @@ import {SecondaryDataComponent} from "../secondary-data/secondary-data.component
     templateUrl: './career-form.component.html'
 })
 export class CareerFormComponent implements OnInit {
-    private readonly BreadcrumbService = inject(BreadcrumbService);
+    private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly customMessageService = inject(CustomMessageService);
     protected readonly careerCreateStore = inject(CareerStore);
@@ -35,13 +35,17 @@ export class CareerFormComponent implements OnInit {
     public id = input.required<string>();
 
     constructor() {
-        this.BreadcrumbService.setItems([
-            {
-                label: 'Listado de Carreras',
-                routerLink: MY_ROUTES.adminPages.user.absolute
-            },
-            {label: 'Formulario'}
-        ]);
+        this.breadcrumbService.setItems(
+            [
+                {
+                    label: 'Listado de Carreras',
+                    routerLink: MY_ROUTES.adminPages.user.absolute
+                },
+                {
+                    label: 'Formulario',
+                },
+            ]
+        );
     }
 
     ngOnInit() {
@@ -74,7 +78,6 @@ export class CareerFormComponent implements OnInit {
         } else {
             this.update(payload);
         }
-
     }
 
     private create(payload: CareerState) {

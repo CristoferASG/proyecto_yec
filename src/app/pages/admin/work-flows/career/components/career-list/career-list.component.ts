@@ -37,7 +37,7 @@ import {debouncedSignal} from "@utils/helpers";
 })
 export class CareerListComponent implements OnInit {
     private readonly router = inject(Router);
-    protected readonly careerRegistrationService = inject(CareerService);
+    protected readonly careerService = inject(CareerService);
     private readonly confirmationService = inject(ConfirmationService);
     protected readonly CustomIcons = CustomIcons;
 
@@ -67,6 +67,7 @@ export class CareerListComponent implements OnInit {
             const term = this.debouncedSearch();
 
             if (term) this.findCareers(1, term);
+            else this.findCareers();
         });
     }
 
@@ -85,7 +86,7 @@ export class CareerListComponent implements OnInit {
 
         actions.push({
             ...deleteButtonAction,
-            command: () => this.delete(item, index)
+            command: () => this.delete(item)
         });
 
         if (item.isEnabled) {
@@ -115,34 +116,32 @@ export class CareerListComponent implements OnInit {
         this.router.navigate([MY_ROUTES.adminPages.user.form.absolute, item.id]);
     }
 
-    private delete(item: CareerInterface, index: number): void {
+    private delete(item: CareerInterface): void {
         this.confirmationService.confirm({
+            key: 'confirmdialog',
             message: '¿Está seguro de eliminar?',
             header: 'Eliminar',
             icon: CustomIcons.TRASH_SOLID,
-            rejectButtonStyleClass: 'p-button-text',
-            acceptButtonStyleClass: 'p-button-raised',
             rejectButtonProps: {
                 label: 'Cancelar',
                 severity: 'secondary',
                 text: true
             },
             acceptButtonProps: {
-                label: 'Sí, Eliminar'
+                label: 'Sí, Eliminar',
             },
             accept: () => {
-                this.careerRegistrationService.deleteCareer(item.id).subscribe({
+                this.careerService.deleteCareer(item.id).subscribe({
                     next: () => {
-                        this.items().splice(index, 1);
+                        this.findCareers();
                     }
                 })
             },
-            key: 'confirmdialog'
         });
     }
 
     private findCareers(page = 1, search = '') {
-        this.careerRegistrationService.findCareers(page, search, '126ec046-d63d-4b04-8161-3a49a4802cb9').subscribe({
+        this.careerService.findCareers(page, search, '126ec046-d63d-4b04-8161-3a49a4802cb9').subscribe({
             next: (response) => {
                 this.items.set(response.data);
                 this.pagination.set(response.pagination!);

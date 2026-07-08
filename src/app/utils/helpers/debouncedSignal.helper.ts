@@ -4,7 +4,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs';
 
 export function debouncedSignal<T>(
     source: Signal<T>,
-    ms: number = 300
+    ms: number = 500
 ): Signal<T> {
     return toSignal(
         toObservable(source).pipe(

@@ -8,7 +8,11 @@ import {CareerStore} from "../../career.store";
 import {
     customFormValidation,
 } from "@modules/admin/work-flows/career/components/principla-data/principal-data.validation";
-import {PrincipalData} from "../../career.state";
+import {CareerState, PrincipalData} from "../../career.state";
+import {CatalogueInterface} from "@utils/interfaces";
+import {CareerService} from "@modules/admin/work-flows/career/career.service";
+import {CatalogueService, DpaHttpService} from "@utils/services";
+import {CatalogueTypeEnum} from "@utils/enums";
 
 const FORM_STATE_KEY = 'principalData';
 
@@ -26,8 +30,13 @@ export class PrincipalDataComponent implements OnInit, OnDestroy {
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly careerCreateStore = inject(CareerStore);
     protected readonly form$: WritableSignal<PrincipalData> = signal(this.careerCreateStore.principalData());
+    protected readonly careerRegistrationService = inject(CareerService);
+    protected readonly catalogueService = inject(CatalogueService);
     protected readonly formData: FieldTree<PrincipalData> = this.buildForm();
     private formInitialized: boolean = false;
+
+    //Catalogues
+    protected levels: CatalogueInterface[] = [];
 
     constructor() {
         this.initializeData();
@@ -41,6 +50,8 @@ export class PrincipalDataComponent implements OnInit, OnDestroy {
             this.formData,
             this.form$()
         );
+
+        this.findLevels2();
     }
 
     ngOnDestroy(): void {
@@ -51,9 +62,9 @@ export class PrincipalDataComponent implements OnInit, OnDestroy {
         effect(() => {
             const data = this.careerCreateStore.principalData();
 
-            if (!this.formInitialized && data.code) {
-                this.formInitialized = true;
+            if (!this.formInitialized) {
                 this.form$.set(data);
+                this.formInitialized = true;
             }
         });
     }
@@ -68,5 +79,18 @@ export class PrincipalDataComponent implements OnInit, OnDestroy {
         return form<PrincipalData>(this.form$, (schema) => {
             customFormValidation(schema)
         });
+    }
+
+    // private findLevels() {
+    //     this.careerRegistrationService.findCareers(1, '', '').subscribe({
+    //         next: (response) => {
+    //             this.levels = response;
+    //         }
+    //     });
+    // }
+
+    private findLevels2() {
+        this.levels = this.catalogueService.findByType(CatalogueTypeEnum.users_security_question);
+        console.log(this.levels);
     }
 }

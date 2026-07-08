@@ -149,7 +149,23 @@ export const MY_ROUTES = {
                 base: 'process-logs',
                 absolute: '/main/core/technician/process-logs'
             }
-        }
+        },
+        student: {
+            base: 'students',
+            absolute: '/main/core/students',
+            dashboard: {
+                base: 'dashboard',
+                absolute: '/main/core/students/dashboard'
+            },
+            grade: {
+                base: 'grades',
+                absolute: '/main/core/student/grades'
+            },
+            enrollment: {
+                base: 'enrollments',
+                absolute: '/main/core/student/enrollments'
+            },
+        },
     },
     publicPages: {
         base: 'public',

@@ -40,6 +40,6 @@ export class AppComponent implements OnInit {
     protected loading = signal(true);
 
     ngOnInit() {
-        this.authService.accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyOGE2ZWY4LTNlOGYtNDNiYS1hYmZjLTAwY2QxY2EyMDljMiIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3ODMzODEwMzAsImV4cCI6MTc4MzQ2NzQzMH0.HNX1vd6FtEMdycZwebSuql-ldlBby7O22c3q85mVXgo';
+        this.authService.accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyOGE2ZWY4LTNlOGYtNDNiYS1hYmZjLTAwY2QxY2EyMDljMiIsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE3ODM0Njc1NDgsImV4cCI6MTc4MzU1Mzk0OH0.05D-qtR9pO5j9LXoQ0C2wNfRr-pRjp8utT-GvMbS8Bs';
     }
 }
