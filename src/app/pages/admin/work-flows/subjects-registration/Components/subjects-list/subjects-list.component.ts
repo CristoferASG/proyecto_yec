@@ -1,70 +1,215 @@
-import { Component, inject, signal } from '@angular/core';
-
+import { Component, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { Router } from '@angular/router';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 import { Button } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { InputText } from 'primeng/inputtext';
 import { InputGroup } from 'primeng/inputgroup';
+import { InputText } from 'primeng/inputtext';
 import { Paginator, PaginatorState } from 'primeng/paginator';
+import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
-import { MenuItem } from 'primeng/api';
-import {Router} from "@angular/router";
+import { MY_ROUTES } from '@routes';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
-import { registrationButtonAction } from '@utils/components/button-action/consts';
+import {
+  activateButtonAction,
+  deleteButtonAction,
+  editButtonAction,
+  inactivationButtonAction,
+  viewButtonAction
+} from '@utils/components/button-action/consts';
+import { debouncedSignal } from '@utils/helpers';
 import { CustomIcons } from '@utils/icons/custom-icons';
 import { INITIAL_PAGINATION, PaginationInterface } from '@utils/interfaces';
-import {MY_ROUTES} from "@routes";
-import { SubjectsRegistrationStore } from '../../subjects-registration.store';
 import { SubjectListItem } from '../../subjects-registration.state';
+import { SubjectsRegistrationStore } from '../../subjects-registration.store';
 
 @Component({
-    selector: 'app-subjects-list',
-    imports: [
-        Button,
-        TableModule,
-        InputText,
-        InputGroup,
-        Paginator,
-        ButtonActionComponent,
-        Tooltip
-    ],
-    templateUrl: './subjects-list.component.html'
+  selector: 'app-subjects-list',
+  imports: [
+    Button,
+    TableModule,
+    InputText,
+    InputGroup,
+    Paginator,
+    ButtonActionComponent,
+    Tooltip
+  ],
+  templateUrl: './subjects-list.component.html'
 })
-export class SubjectsListComponent {
-    protected readonly subjectsRegistrationStore = inject(SubjectsRegistrationStore);
-    protected readonly CustomIcons = CustomIcons;
-    private readonly router = inject(Router);
+export class SubjectsListComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly confirmationService = inject(ConfirmationService);
+  protected readonly subjectsRegistrationStore = inject(SubjectsRegistrationStore);
+  protected readonly CustomIcons = CustomIcons;
 
-    // Datos quemados provenientes del store (solo vista, sin backend por ahora)
-    protected readonly items = this.subjectsRegistrationStore.items;
+  // "Fuente de datos" simulada del store
+  private readonly allItems = this.subjectsRegistrationStore.items;
 
-    protected readonly search = signal('');
-    protected readonly pagination = signal<PaginationInterface>(INITIAL_PAGINATION);
-    protected readonly buttonActions = signal<MenuItem[]>([]);
-    protected isButtonActionsEnabled = false;
+  // Datos reactivos que se pintan en la tabla
+  protected items = signal<SubjectListItem[]>([]);
+  protected search = signal('');
+  private debouncedSearch = debouncedSignal(this.search);
 
-    /** Construye las acciones visuales por fila (sin lógica real todavía) **/
-  buildButtonActions(item: any, index: number) {
-        const actions: MenuItem[] = [];
+  protected pagination = signal<PaginationInterface>(INITIAL_PAGINATION);
+  protected buttonActions = signal<MenuItem[]>([]);
+  protected isButtonActionsEnabled: boolean = false;
 
-        actions.push({
-            ...registrationButtonAction,
-            command: () => this.goToCreate(item)
-        });
+  constructor() {
+    // Effects
+    this.searching();
+  }
 
-        this.buttonActions.set(actions);
+  ngOnInit(): void {
+    this.loadItems();
+  }
+
+  protected onSearchInput(event: Event): void {
+    this.search.set((event.target as HTMLInputElement).value);
+  }
+
+  private searching(): void {
+    effect(() => {
+      const term = this.debouncedSearch();
+
+      if (term) this.findSubjects(1, term);
+      else this.findSubjects();
+    });
+  }
+
+  private loadItems(): void {
+    this.findSubjects();
+  }
+
+  /**
+   * Simula filtrado + paginación sobre los datos locales del Store,
+   * manteniendo la misma firma para cuando se conecte al Backend.
+   */
+  private findSubjects(page = 1, search = '') {
+    untracked(() => {
+      const term = search.toLowerCase();
+
+      const filtered = this.allItems().filter(item =>
+        !term ||
+        item.code.toLowerCase().includes(term) ||
+        item.name.toLowerCase().includes(term)
+      );
+
+      const limit = this.pagination().limit;
+      const start = (page - 1) * limit;
+
+      this.items.set(filtered.slice(start, start + limit));
+
+      this.pagination.update(current => ({
+        ...current,
+        page,
+        totalItems: filtered.length
+      }));
+    });
+  }
+
+  private buildButtonActions(item: SubjectListItem, index: number): void {
+    const actions: MenuItem[] = [];
+
+    actions.push({
+      ...viewButtonAction,
+      command: () => this.goToView(item)
+    });
+
+    actions.push({
+      ...editButtonAction,
+      command: () => this.goToEdit(item)
+    });
+
+    actions.push({
+      ...deleteButtonAction,
+      command: () => this.delete(item)
+    });
+
+    if (item.isVisible) {
+      actions.push({
+        ...inactivationButtonAction,
+        command: () => this.hide(item)
+      });
+    } else {
+      actions.push({
+        ...activateButtonAction,
+        command: () => this.reactivate(item)
+      });
     }
 
-    goToCreate(item: any) {
-        this.router.navigate([MY_ROUTES.adminPages.subject.form.absolute]);
-    }
+    this.buttonActions.set(actions);
+  }
 
-    onSelect({ item, index }: { item: SubjectListItem; index: number }): void {
-        this.isButtonActionsEnabled = true;
-        this.buildButtonActions(item, index);
-    }
+  /** Navegación **/
+  protected goToCreate() {
+    this.router.navigate([MY_ROUTES.adminPages.subject.form.absolute, 'new']);
+  }
 
-    /** Paginación visual únicamente; sin consulta real al backend por ahora **/
-    onPageChange(paginatorState: PaginatorState): void {
-        // Se implementará cuando exista conexión real con el backend
+  private goToEdit(item: SubjectListItem) {
+    this.router.navigate([MY_ROUTES.adminPages.subject.form.absolute, item.id]);
+  }
+
+  private goToView(item: SubjectListItem) {
+    this.router.navigate(
+      [MY_ROUTES.adminPages.subject.form.absolute, item.id],
+      { queryParams: { mode: 'view' } }
+    );
+  }
+
+  private delete(item: SubjectListItem): void {
+    this.confirmationService.confirm({
+      key: 'confirmdialog',
+      message: `¿Está seguro de eliminar la asignatura "${item.name}"?`,
+      header: 'Eliminar',
+      icon: CustomIcons.TRASH_SOLID,
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        text: true
+      },
+      acceptButtonProps: {
+        label: 'Sí, Eliminar',
+      },
+      accept: () => {
+        this.subjectsRegistrationStore.items.update(items =>
+          items.filter(current => current.id !== item.id)
+        );
+        this.findSubjects(this.pagination().page, this.search());
+      },
+    });
+  }
+
+  private hide(item: SubjectListItem): void {
+    this.confirmationService.confirm({
+      key: 'confirmdialog',
+      message: `¿Está seguro de ocultar la asignatura "${item.name}"?`,
+      header: 'Ocultar asignatura',
+      icon: CustomIcons.TRASH_SOLID,
+      rejectButtonProps: { label: 'Cancelar', severity: 'secondary', text: true },
+      acceptButtonProps: { label: 'Sí, ocultar' },
+      accept: () => this.updateVisibility(item.id, false)
+    });
+  }
+
+  private reactivate(item: SubjectListItem): void {
+    this.updateVisibility(item.id, true);
+  }
+
+  private updateVisibility(id: string, isVisible: boolean): void {
+    this.subjectsRegistrationStore.items.update(items =>
+      items.map(current => (current.id === id ? { ...current, isVisible } : current))
+    );
+
+    this.findSubjects(this.pagination().page, this.search());
+  }
+
+  protected onSelect({ item, index }: { item: any; index: number }) {
+    this.isButtonActionsEnabled = true;
+    this.buildButtonActions(item, index);
+  }
+
+  protected onPageChange(paginatorState: PaginatorState) {
+    if (paginatorState?.page || paginatorState.page === 0) {
+      this.findSubjects(paginatorState.page + 1, this.search());
     }
+  }
 }

@@ -24,7 +24,7 @@ export default [
         loadComponent: () => SubjectsListComponent
     },
     {
-        path: MY_ROUTES.adminPages.subject.form.base,
+        path: MY_ROUTES.adminPages.subject.form.base + '/:id',
         title: 'Registro de Asignatura',
         loadComponent: () => SubjectsComponent
     }

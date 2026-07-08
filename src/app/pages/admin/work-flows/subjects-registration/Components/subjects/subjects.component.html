@@ -40,7 +40,8 @@
                 [formField]="$any(academicPeriodField)"
                 [options]="academicPeriods()"
                 optionLabel="name"
-                placeholder="Seleccione">
+                placeholder="Seleccione"
+               >
             </p-select>
             <small [appErrorMessage]="$any(academicPeriodField)"></small>
         </div>
@@ -58,7 +59,8 @@
                 [formField]="$any(typeField)"
                 [options]="types()"
                 optionLabel="name"
-                placeholder="Seleccione">
+                placeholder="Seleccione"
+               >
             </p-select>
             <small [appErrorMessage]="$any(typeField)"></small>
         </div>
@@ -143,7 +145,8 @@
                 [options]="subjectsPrerequisites()"
                 display="chip"
                 optionLabel="name"
-                placeholder="Seleccione...">
+                placeholder="Seleccione..."
+               >
             </p-multiselect>
             <small [appErrorMessage]="$any(subjectPrerequisitesField)"></small>
         </div>
@@ -162,7 +165,8 @@
                 [options]="subjectsCorequisites()"
                 display="chip"
                 optionLabel="name"
-                placeholder="Seleccione...">
+                placeholder="Seleccione..."
+               >
             </p-multiselect>
             <small [appErrorMessage]="$any(subjectCorequisitesField)"></small>
         </div>
@@ -170,15 +174,17 @@
     </form>
 </div>
 
-<div class="custom-form-card">
-    <div class="custom-form-grid md:grid-cols-12">
-        <div class="custom-form-field md:col-span-6 md:col-start-4">
-            <p-button
-                label="Guardar"
-                icon="pi pi-save"
-                styleClass="w-full"
-                (click)="onSubmit()">
-            </p-button>
+@if (!isViewMode()) {
+    <div class="custom-form-card">
+        <div class="custom-form-grid md:grid-cols-12">
+            <div class="custom-form-field md:col-span-6 md:col-start-4">
+                <p-button
+                    label="Guardar"
+                    icon="pi pi-save"
+                    styleClass="w-full"
+                    (click)="onSubmit()">
+                </p-button>
+            </div>
         </div>
     </div>
-</div>
+}
