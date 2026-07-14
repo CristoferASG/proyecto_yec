@@ -1,0 +1,255 @@
+
+<div class="custom-form-card">
+  <form class="custom-form-grid md:grid-cols-12">
+
+    <div class="custom-form-section md:col-span-12">
+      <h4>General Info</h4>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="name"
+        label="Nombre"
+        [field]="$any(formData.name)">
+      </label>
+
+      <input
+        pInputText
+        id="name"
+        [formField]="formData.name">
+
+      <small [appErrorMessage]="$any(formData.name)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="denomination"
+        label="Denominación"
+        [field]="$any(formData.denomination)">
+      </label>
+
+      <input
+        pInputText
+        id="denomination"
+        [formField]="formData.denomination">
+
+      <small [appErrorMessage]="$any(formData.denomination)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="shortName"
+        label="Nombre Corto"
+        [field]="$any(formData.shortName)">
+      </label>
+
+      <input
+        pInputText
+        id="shortName"
+        [formField]="formData.shortName">
+
+      <small [appErrorMessage]="$any(formData.shortName)"></small>
+    </div>
+
+    <div class="custom-form-section md:col-span-12">
+      <h4>Contact Info</h4>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="cellphone"
+        label="Celular"
+        [field]="$any(formData.cellphone)">
+      </label>
+
+      <input
+        pInputText
+        id="cellphone"
+        [formField]="formData.cellphone">
+
+      <small [appErrorMessage]="$any(formData.cellphone)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="phone"
+        label="Teléfono"
+        [field]="$any(formData.phone)">
+      </label>
+
+      <input
+        pInputText
+        id="phone"
+        [formField]="formData.phone">
+
+      <small [appErrorMessage]="$any(formData.phone)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="email"
+        label="Email"
+        [field]="$any(formData.email)">
+      </label>
+
+      <input
+        pInputText
+        id="email"
+        [formField]="formData.email">
+
+      <small [appErrorMessage]="$any(formData.email)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="web"
+        label="Web"
+        [field]="$any(formData.web)">
+      </label>
+
+      <input
+        pInputText
+        id="web"
+        [formField]="formData.web">
+
+      <small [appErrorMessage]="$any(formData.web)"></small>
+    </div>
+
+    <div class="custom-form-section md:col-span-12">
+      <h4>Configuration Info</h4>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="state"
+        label="Estado"
+        [field]="$any(formData.state)">
+      </label>
+
+      <p-toggleSwitch
+        inputId="state"
+        [formField]="formData.state">
+      </p-toggleSwitch>
+
+      <small [appErrorMessage]="$any(formData.state)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="isVisible"
+        label="Visible"
+        [field]="$any(formData.isVisible)">
+      </label>
+
+      <p-toggleSwitch
+        inputId="isVisible"
+        [formField]="formData.isVisible">
+      </p-toggleSwitch>
+
+      <small [appErrorMessage]="$any(formData.isVisible)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <!-- <label
+        appLabel
+        for="logo"
+        label="Logo"
+        [field]="$any(formData.logo)">
+      </label>
+
+      <input
+        pInputText
+        id="logo"
+        [formField]="formData.logo">
+
+      <small [appErrorMessage]="$any(formData.logo)"></small> -->
+    </div>
+
+    <div class="custom-form-section md:col-span-12">
+      <h4>Institutional Info</h4>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="code"
+        label="Código"
+        [field]="$any(formData.code)">
+      </label>
+
+      <input
+        pInputText
+        id="code"
+        [formField]="formData.code">
+
+      <small [appErrorMessage]="$any(formData.code)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="codeSniese"
+        label="Código SNIESE"
+        [field]="$any(formData.codeSniese)">
+      </label>
+
+      <input
+        pInputText
+        id="codeSniese"
+        [formField]="formData.codeSniese">
+
+      <small [appErrorMessage]="$any(formData.codeSniese)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <label
+        appLabel
+        for="acronym"
+        label="Siglas"
+        [field]="$any(formData.acronym)">
+      </label>
+
+      <input
+        pInputText
+        id="acronym"
+        [formField]="formData.acronym">
+
+      <small [appErrorMessage]="$any(formData.acronym)"></small>
+    </div>
+
+    <div class="custom-form-field md:col-span-6">
+      <!-- <label
+        appLabel
+        for="slogan"
+        label="Slogan"
+        [field]="$any(formData.slogan)">
+      </label>
+
+      <input
+        pInputText
+        id="slogan"
+        [formField]="formData.slogan">
+
+      <small [appErrorMessage]="$any(formData.slogan)"></small> -->
+    </div>
+
+    <div class="custom-form-field md:col-span-12">
+      <p-button
+        type="button"
+        label="Guardar Institución"
+        icon="pi pi-save"
+        (onClick)="save()">
+      </p-button>
+    </div>
+
+  </form>
+</div>

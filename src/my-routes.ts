@@ -239,10 +239,16 @@ export const MY_ROUTES = {
                 base: 'users/profile',
                 absolute: '/main/admin/users/profile'
             }
+
+        },
+        institution: {
+            base: 'institutions',
+            absolute: '/main/admin/institutions',
         }
     },
     dashboards: {
         base: 'dashboards',
         absolute: '/main/dashboards'
     }
+
 };

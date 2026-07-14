@@ -1,0 +1,142 @@
+<p-table
+  #dt
+  [value]="items()"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  stripedRows>
+
+  <ng-template #caption>
+    <div class="custom-form-grid">
+      <div class="custom-form-grid md:grid-cols-12">
+
+        <div class="custom-form-field md:col-span-8">
+          <h2>Listado de Instituciones</h2>
+        </div>
+
+        <div class="custom-form-field md:col-span-4">
+          <p-input-group>
+            <input
+              pInputText
+              type="text"
+              [value]="search()"
+              (input)="onSearchInput($event)"
+              placeholder="Buscar..."/>
+
+            <p-button
+              [icon]="CustomIcons.MAGNIFYING_GLASS_SOLID">
+            </p-button>
+          </p-input-group>
+        </div>
+
+        <div class="custom-form-field-row md:col-span-12 justify-start">
+          <p-button
+            label="Acción 1"
+            [icon]="CustomIcons.DOWNLOAD_SOLID"
+            severity="success"/>
+
+          <p-button
+            label="Acción 2"
+            [icon]="CustomIcons.FILE_PDF_SOLID"
+            severity="danger"/>
+
+          <p-button
+            label="Acción 3"
+            [icon]="CustomIcons.FILE_AUDIO_SOLID"
+            severity="info"/>
+        </div>
+
+        <div class="custom-form-field md:col-span-12">
+          <p-paginator
+            (onPageChange)="onPageChange($event)"
+            [rows]="pagination().limit"
+            [totalRecords]="pagination().totalItems">
+          </p-paginator>
+        </div>
+
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #header>
+    <tr>
+      <th>Código</th>
+      <th>Nombre</th>
+      <th>Nombre Corto</th>
+      <th>Siglas</th>
+      <th>SNIESE</th>
+      <th>Estado</th>
+      <th>Visible</th>
+      <th>
+        <p-button
+          pTooltip="Crear"
+          [icon]="CustomIcons.PLUS_SOLID"
+          severity="success"
+          (onClick)="goToCreate()">
+        </p-button>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template
+    #body
+    let-item
+    let-rowIndex="rowIndex">
+
+    <tr>
+      <td>{{ item.code }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.shortName }}</td>
+      <td>{{ item.acronym }}</td>
+      <td>{{ item.codeSniese }}</td>
+      <td>{{ getStateLabel(item.state) }}</td>
+      <td>{{ getVisibleLabel(item.isVisible) }}</td>
+      <td>
+        <p-button
+          pTooltip="Gestionar"
+          [icon]="CustomIcons.ELLIPSIS_VERTICAL_SOLID"
+          (click)="onSelect({ item, index: rowIndex })">
+        </p-button>
+      </td>
+    </tr>
+
+  </ng-template>
+
+  <ng-template #footer>
+    <tr>
+      <td colspan="8">
+        En total existen {{ items() ? pagination().totalItems : 0 }} items.
+      </td>
+    </tr>
+  </ng-template>
+
+</p-table>
+
+<app-button-action
+  [buttonActions]="buttonActions()"
+  [enabled]="isButtonActionsEnabled"
+  (isHide)="isButtonActionsEnabled = $event">
+</app-button-action>
+
+<p-dialog
+  [header]="selectedInstitutionId() ? 'Editar Institución' : 'Registro de Institución'"
+  [visible]="dialogVisible()"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [maximizable]="true"
+  [style]="{
+    width: '90vw',
+    maxWidth: '1200px'
+  }"
+  [contentStyle]="{
+    maxHeight: '80vh',
+    overflow: 'auto'
+  }"
+  (visibleChange)="onDialogVisibleChange($event)">
+
+  @if (dialogVisible()) {
+    <app-institution-form
+      (saved)="onInstitutionSaved($event)">
+    </app-institution-form>
+  }
+
+</p-dialog>
