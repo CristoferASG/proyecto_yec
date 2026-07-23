@@ -232,6 +232,10 @@ export const MY_ROUTES = {
                 absolute: '/main/admin/subjects/form'
             }
         },
+        institution: {
+            base: 'institutions',
+            absolute: '/main/admin/institutions',
+        }
     },
     dashboards: {
         base: 'dashboards',
