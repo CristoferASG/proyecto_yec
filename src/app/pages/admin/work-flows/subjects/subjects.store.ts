@@ -1,7 +1,6 @@
 import {computed, Injectable, signal} from "@angular/core";
-import {SECTION_KEYS, SubjectState, SUBJECT_INITIAL_STATE} from "./subjects.state";
+import {SECTION_KEYS, SubjectInterface, SubjectState, SUBJECT_INITIAL_STATE} from "./subjects.state";
 import {pickKeys} from "@utils/helpers/pickKeys.helper";
-import {SubjectInterface} from "./components/subjects-form/models/subjects.model";
 
 @Injectable({providedIn: 'root'})
 export class SubjectsStore {

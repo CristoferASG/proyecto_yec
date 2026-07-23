@@ -1,15 +1,7 @@
 // ==============================
-// Modelos de dominio (item de lista / DTOs retornados por el backend).
-// Diferentes del estado del formulario (ver subjects.state.ts).
+// (Legacy) Los modelos de dominio ahora viven en subjects.state.ts,
+// alineado al patrón de career (donde las interfaces coexisten con el
+// estado del formulario en el mismo archivo). Ver SubjectInterface.
 // ==============================
-export interface SubjectInterface {
-    id: string;
-    code: string;
-    name: string;
-    academicPeriod: string;
-    type: string;
-    teacherHour: number;
-    practicalHour: number;
-    autonomousHour: number;
-    isVisible: boolean;
-}
+// import { SubjectInterface } from '../../../subjects.state';
+// export type SubjectRecord = SubjectInterface;

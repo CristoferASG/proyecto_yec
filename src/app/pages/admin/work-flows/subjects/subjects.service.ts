@@ -4,8 +4,7 @@ import {HttpResponseInterface} from "@utils/interfaces";
 import {map} from "rxjs/operators";
 import {environment} from "@env/environment";
 import {Observable} from "rxjs";
-import {SubjectState} from "./subjects.state";
-import {SubjectInterface} from "./components/subjects-form/models/subjects.model";
+import {SubjectInterface, SubjectState} from "./subjects.state";
 
 @Injectable({providedIn: 'root'})
 export class SubjectsService {

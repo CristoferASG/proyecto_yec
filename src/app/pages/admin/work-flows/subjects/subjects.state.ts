@@ -73,3 +73,19 @@ type SectionKeysMap = {
 export const SECTION_KEYS: SectionKeysMap = {
     subjectData: SUBJECT_DATA_KEYS,
 };
+
+// ==============================
+// Modelo de dominio (item de lista / DTO retornado por el backend).
+// Diferente del estado del formulario (SubjectData).
+// ==============================
+export interface SubjectInterface {
+    id: string;
+    code: string;
+    name: string;
+    academicPeriod: string;
+    type: string;
+    teacherHour: number;
+    practicalHour: number;
+    autonomousHour: number;
+    isVisible: boolean;
+}

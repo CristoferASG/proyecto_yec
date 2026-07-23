@@ -19,7 +19,7 @@ import {
 import {debouncedSignal} from '@utils/helpers';
 import {CustomIcons} from '@utils/icons/custom-icons';
 import {INITIAL_PAGINATION, PaginationInterface} from '@utils/interfaces';
-import {SubjectInterface} from '../subjects-form/models/subjects.model';
+import {SubjectInterface} from '../../subjects.state';
 import {SubjectsStore} from '../../subjects.store';
 
 @Component({
