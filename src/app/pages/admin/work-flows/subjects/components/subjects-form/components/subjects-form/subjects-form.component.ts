@@ -17,6 +17,7 @@ import {MY_ROUTES} from '@routes';
 
 import {SubjectsStore} from '../../../../subjects.store';
 import {SubjectsService} from '../../../../subjects.service';
+import {SUBJECT_INITIAL_STATE} from '../../../../subjects.state';
 import {CatalogueOption, SubjectData, SubjectOption} from '../../../../subjects.state';
 import {applySubjectValidators} from '../../validators/subjects.validators';
 
@@ -57,7 +58,6 @@ export class SubjectsFormComponent implements OnInit, OnDestroy {
 
     protected readonly form$ = signal<SubjectData>(this.subjectsStore.subjectData());
     protected readonly formData: FieldTree<SubjectData> = this.buildForm();
-    private formInitialized = false;
 
     // ==============================
     // Catálogos quemados (mock) mientras no hay conexión a backend para catálogos.
@@ -89,23 +89,21 @@ export class SubjectsFormComponent implements OnInit, OnDestroy {
             {label: 'Formulario'}
         ]);
 
-        // Sincroniza cambios del form local hacia el store.
+        // Sincroniza cambios del form local hacia el store (store es el único fuente
+        // de verdad pública; el form local publica cada cambio).
         effect(() => {
             this.subjectsStore.updateSection(FORM_STATE_KEY, this.form$());
-        });
-
-        // Sincroniza el store hacia el form local (carga en edición) la primera vez.
-        effect(() => {
-            const data = this.subjectsStore.subjectData();
-            if (!this.formInitialized) {
-                this.form$.set(data);
-                this.formInitialized = true;
-            }
         });
     }
 
     ngOnInit(): void {
-        if (this.id() !== 'new') {
+        if (this.id() === 'new') {
+            // Modo Crear: el store es un singleton compartido entre navegaciones,
+            // así que forzamos el reseteo del formulario al estado inicial vacío.
+            this.subjectsStore.resetForm();
+            this.form$.set(SUBJECT_INITIAL_STATE.subjectData);
+        } else {
+            // Modo Editar/Ver: carga el registro correspondiente.
             this.loadData();
         }
 
@@ -122,36 +120,38 @@ export class SubjectsFormComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Carga el registro a editar/ver desde el service real (SubjectsService.findSubject).
-     * Mientras el endpoint no exista, se mantiene un respaldo temporal que busca el
-     * registro en los datos quemados del store para poder probar Ver/Editar.
+     * Carga el registro a editar/ver.
+     *
+     * TODO (backend): reemplazar el bloque de mock por la llamada real:
+     *   this.subjectsService.findSubject(this.id()).subscribe(next: r =>
+     *       this.subjectsStore.updateSection(FORM_STATE_KEY, r)) );
+     * Mientras el endpoint /subjects no exista, se cargan los datos desde los
+     * registros quemados del store (subjectsStore.items) para poder probar Ver/Editar.
      */
     private loadData(): void {
-        this.subjectsService.findSubject(this.id()).subscribe({
-            next: (response) => {
-                this.subjectsStore.updateSection(FORM_STATE_KEY, response as unknown as Partial<SubjectData>);
-            },
-            error: () => {
-                // Respaldo temporal con datos quemados mientras no exista el endpoint.
-                const mockItem = this.subjectsStore.items().find(item => item.id === this.id());
-                if (!mockItem) return;
+        // --- Respaldo temporal con datos quemados (sin backend) ---
+        const mockItem = this.subjectsStore.items().find(item => item.id === this.id());
+        if (!mockItem) return;
 
-                const academicPeriod = this.academicPeriods().find(option => option.name === mockItem.academicPeriod) ?? null;
-                const type = this.types().find(option => option.name === mockItem.type) ?? null;
+        const academicPeriod = this.academicPeriods().find(option => option.name === mockItem.academicPeriod) ?? null;
+        const type = this.types().find(option => option.name === mockItem.type) ?? null;
 
-                this.form$.update(current => ({
-                    ...current,
-                    academicPeriod,
-                    type,
-                    code: mockItem.code,
-                    name: mockItem.name,
-                    teacherHour: mockItem.teacherHour,
-                    practicalHour: mockItem.practicalHour,
-                    autonomousHour: mockItem.autonomousHour,
-                    isVisible: mockItem.isVisible
-                }));
-            }
-        });
+        const loaded: SubjectData = {
+            ...SUBJECT_INITIAL_STATE.subjectData,
+            academicPeriod,
+            type,
+            code: mockItem.code,
+            name: mockItem.name,
+            teacherHour: mockItem.teacherHour,
+            practicalHour: mockItem.practicalHour,
+            autonomousHour: mockItem.autonomousHour,
+            isVisible: mockItem.isVisible
+        };
+
+        // Reseteamos el store primero para no mezclar con datos de una sesión anterior,
+        // y luego aplicamos los datos cargados de forma atómica.
+        this.subjectsStore.resetForm();
+        this.form$.set(loaded);
     }
 
     async onSubmit(): Promise<void> {

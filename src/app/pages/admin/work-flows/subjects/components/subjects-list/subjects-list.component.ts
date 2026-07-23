@@ -83,6 +83,13 @@ export class SubjectsListComponent implements OnInit {
      * Simula filtrado + paginación sobre los datos locales del Store,
      * manteniendo la misma firma para cuando se conecte al Backend
      * (SubjectsService.findSubjects).
+     *
+     * OJO: las lecturas/escrituras se ejecutan dentro de `untracked` para que
+     * el effect de `searching()` no se re-suscriba a `pagination`/`items` y
+     * arme un bucle infinito de change detection (que congela la UI).
+     * Además, la escritura de `pagination` se hace solo si los valores
+     * relevantes realmente cambiaron, para no forzar al `p-paginator` a
+     * re-emitir `onPageChange` en bucle.
      */
     private findSubjects(page = 1, search = '') {
         untracked(() => {
@@ -97,13 +104,24 @@ export class SubjectsListComponent implements OnInit {
             const limit = this.pagination().limit;
             const start = (page - 1) * limit;
 
-            this.items.set(filtered.slice(start, start + limit));
+            const paged = filtered.slice(start, start + limit);
+            const totalItems = filtered.length;
 
-            this.pagination.update(current => ({
-                ...current,
-                page,
-                totalItems: filtered.length
-            }));
+            // Solo se actualiza items/pagination si hay cambios reales,
+            // para evitar que el p-paginator re-emita onPageChange en bucle.
+            const current = this.items();
+            if (current.length !== paged.length || current.some((it, i) => it !== paged[i])) {
+                this.items.set(paged);
+            }
+
+            const pag = this.pagination();
+            if (pag.page !== page || pag.totalItems !== totalItems) {
+                this.pagination.update(curr => ({
+                    ...curr,
+                    page,
+                    totalItems
+                }));
+            }
         });
     }
 
@@ -192,7 +210,18 @@ export class SubjectsListComponent implements OnInit {
     }
 
     private reactivate(item: SubjectInterface): void {
-        this.updateVisibility(item.id, true);
+        // Igual que hide(): va por confirm() (asíncrono) para que la mutación
+        // del store no se ejecute dentro del handler del PanelMenu/drawer,
+        // lo que congelaba la UI. Consistencia visual con "Ocultar".
+        this.confirmationService.confirm({
+            key: 'confirmdialog',
+            message: `¿Está seguro de mostrar la asignatura "${item.name}"?`,
+            header: 'Mostrar asignatura',
+            icon: CustomIcons.TRASH_SOLID,
+            rejectButtonProps: {label: 'Cancelar', severity: 'secondary', text: true},
+            acceptButtonProps: {label: 'Sí, mostrar'},
+            accept: () => this.updateVisibility(item.id, true)
+        });
     }
 
     private updateVisibility(id: string, isVisible: boolean): void {
@@ -209,8 +238,14 @@ export class SubjectsListComponent implements OnInit {
     }
 
     protected onPageChange(paginatorState: PaginatorState) {
-        if (paginatorState?.page || paginatorState.page === 0) {
-            this.findSubjects(paginatorState.page + 1, this.search());
+        // El p-paginator re-emite onPageChange al recibir nuevos [rows]/[totalRecords];
+        // si la página resultante es la misma que ya tenemos, lo ignoramos para no
+        // armar un bucle findSubjects <-> paginator que congela la UI.
+        const requestedPage = (paginatorState?.page ?? 0) + 1;
+        const currentPage = this.pagination().page;
+
+        if (paginatorState && requestedPage !== currentPage) {
+            this.findSubjects(requestedPage, this.search());
         }
     }
 }
