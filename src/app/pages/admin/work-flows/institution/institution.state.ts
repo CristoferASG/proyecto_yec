@@ -1,4 +1,12 @@
-export interface InstitutionState {
+// ==============================
+// Datos del formulario (planos, sin anidación en el backend original)
+//
+// NOTA: `isEnabled`/`isVisible` se omiten del modelo de formulario por
+// decisión de dominio: la activación y la visibilidad las gestiona el backend
+// (no son campos de UI que el usuario edición). El back los define y los
+// retorna en el DTO de listado/detalle.
+// ==============================
+export interface InstitutionData {
   name: string;
   denomination: string;
   shortName: string;
@@ -9,8 +17,6 @@ export interface InstitutionState {
   web: string;
 
   logo: string;
-  state: boolean;
-  isVisible: boolean;
 
   code: string;
   codeSniese: string;
@@ -18,29 +24,59 @@ export interface InstitutionState {
   slogan: string;
 }
 
-export interface InstitutionInterface extends InstitutionState {
-  id: string;
+// ==============================
+// Estado del formulario con sección (para consistencia con subject/school-period)
+// ==============================
+export interface InstitutionState {
+  institution: InstitutionData;
 }
 
-export const INITIAL_INSTITUTION_STATE: InstitutionState = {
-  name: '',
-  denomination: '',
-  shortName: '',
+export const INSTITUTION_DATA_KEYS = [
+  'name',
+  'denomination',
+  'shortName',
+  'cellphone',
+  'phone',
+  'email',
+  'web',
+  'logo',
+  'code',
+  'codeSniese',
+  'acronym',
+  'slogan',
+] as const satisfies (keyof InstitutionData)[];
 
-  cellphone: '',
-  phone: '',
-  email: '',
-  web: 'https://',
-
-  logo: '',
-  state: false,
-  isVisible: true,
-
-  code: '',
-  codeSniese: '',
-  acronym: '',
-  slogan: ''
+type SectionKeysMap = {
+  [K in keyof InstitutionState]: readonly (keyof InstitutionState[K])[];
 };
 
+export const SECTION_KEYS: SectionKeysMap = {
+  institution: INSTITUTION_DATA_KEYS,
+};
 
+export const INSTITUTION_INITIAL_STATE: InstitutionState = {
+  institution: {
+    name: '',
+    denomination: '',
+    shortName: '',
 
+    cellphone: '',
+    phone: '',
+    email: '',
+    web: 'https://',
+
+    logo: '',
+
+    code: '',
+    codeSniese: '',
+    acronym: '',
+    slogan: '',
+  },
+};
+
+// ==============================
+// Modelo de dominio (item de lista / DTO retornado por el backend).
+// ==============================
+export interface InstitutionInterface extends InstitutionData {
+  id: string;
+}

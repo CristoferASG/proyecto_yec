@@ -225,16 +225,36 @@ export const MY_ROUTES = {
             }
         },
         subject: {
-            base: 'subjects',
-            absolute: '/main/admin/subjects',
+            base: 'subject',
+            absolute: '/main/admin/subject',
             form: {
-                base: 'subjects/form',
-                absolute: '/main/admin/subjects/form'
+                base: 'subject/form',
+                absolute: '/main/admin/subject/form'
             }
         },
         institution: {
-            base: 'institutions',
-            absolute: '/main/admin/institutions',
+            base: 'institution',
+            absolute: '/main/admin/institution',
+            form: {
+                base: 'institution/form',
+                absolute: '/main/admin/institution/form'
+            }
+        },
+        career: {
+            base: 'career',
+            absolute: '/main/admin/career',
+            form: {
+                base: 'career/form',
+                absolute: '/main/admin/career/form'
+            }
+        },
+        schoolPeriod: {
+            base: 'school-period',
+            absolute: '/main/admin/school-period',
+            form: {
+                base: 'school-period/form',
+                absolute: '/main/admin/school-period/form'
+            }
         }
     },
     dashboards: {

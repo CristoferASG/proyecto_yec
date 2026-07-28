@@ -1,0 +1,226 @@
+<div class="custom-form-card">
+    <form class="custom-form-grid md:grid-cols-12">
+
+        <div class="custom-form-title md:col-span-12">
+            <h4>Registro de Periodo Lectivo</h4>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="state"
+                label="Estado"
+                [field]="$any(formData.state)">
+            </label>
+            <p-select
+                id="state"
+                dataKey="id"
+                [formField]="$any(formData.state)"
+                [options]="states()"
+                optionLabel="name"
+                placeholder="Seleccione">
+            </p-select>
+            <small [appErrorMessage]="$any(formData.state)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="isVisible"
+                label="Visible"
+                [field]="$any(formData.isVisible)">
+            </label>
+            <p-toggleswitch id="isVisible" [formField]="formData.isVisible"></p-toggleswitch>
+            <small [appErrorMessage]="$any(formData.isVisible)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="code"
+                label="Código"
+                [field]="$any(formData.code)">
+            </label>
+            <input pInputText id="code" [formField]="formData.code">
+            <small [appErrorMessage]="$any(formData.code)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="codeSniese"
+                label="Código SNIESE"
+                [field]="$any(formData.codeSniese)">
+            </label>
+            <input pInputText id="codeSniese" [formField]="formData.codeSniese">
+            <small [appErrorMessage]="$any(formData.codeSniese)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="name"
+                label="Nombre"
+                [field]="$any(formData.name)">
+            </label>
+            <input pInputText id="name" [formField]="formData.name">
+            <small [appErrorMessage]="$any(formData.name)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="shortName"
+                label="Nombre corto"
+                [field]="$any(formData.shortName)">
+            </label>
+            <input pInputText id="shortName" [formField]="formData.shortName">
+            <small [appErrorMessage]="$any(formData.shortName)"></small>
+        </div>
+
+        <!-- Periodo lectivo -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="startedAt"
+                label="Fecha de inicio del periodo"
+                [field]="$any(formData.startedAt)">
+            </label>
+            <p-datepicker
+                id="startedAt"
+                dateFormat="yy-mm-dd"
+                [showButtonBar]="true"
+                [firstDayOfWeek]="1"
+                [formField]="$any(formData.startedAt)">
+            </p-datepicker>
+            <small [appErrorMessage]="$any(formData.startedAt)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="endedAt"
+                label="Fecha de finalización del periodo"
+                [field]="$any(formData.endedAt)">
+            </label>
+            <p-datepicker
+                id="endedAt"
+                dateFormat="yy-mm-dd"
+                [showButtonBar]="true"
+                [firstDayOfWeek]="1"
+                [minDate]="form$().startedAt"
+                [formField]="$any(formData.endedAt)">
+            </p-datepicker>
+            <small [appErrorMessage]="$any(formData.endedAt)"></small>
+        </div>
+
+        <!-- Matrícula ordinaria -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="ordinaryStartedAt"
+                label="Inicio periodo ordinario"
+                [field]="$any(formData.ordinaryStartedAt)">
+            </label>
+            <p-datepicker
+                id="ordinaryStartedAt"
+                dateFormat="yy-mm-dd"
+                [showButtonBar]="true"
+                [firstDayOfWeek]="1"
+                [formField]="$any(formData.ordinaryStartedAt)">
+            </p-datepicker>
+            <small [appErrorMessage]="$any(formData.ordinaryStartedAt)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="ordinaryEndedAt"
+                label="Fin periodo ordinario"
+                [field]="$any(formData.ordinaryEndedAt)">
+            </label>
+            <p-datepicker
+                id="ordinaryEndedAt"
+                dateFormat="yy-mm-dd"
+                [showButtonBar]="true"
+                [firstDayOfWeek]="1"
+                [minDate]="form$().ordinaryStartedAt"
+                [formField]="$any(formData.ordinaryEndedAt)">
+            </p-datepicker>
+            <small [appErrorMessage]="$any(formData.ordinaryEndedAt)"></small>
+        </div>
+
+        <!-- Matrícula extraordinaria -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="extraOrdinaryStartedAt"
+                label="Inicio periodo extraordinario"
+                [field]="$any(formData.extraOrdinaryStartedAt)">
+            </label>
+            <p-datepicker
+                id="extraOrdinaryStartedAt"
+                dateFormat="yy-mm-dd"
+                [showButtonBar]="true"
+                [firstDayOfWeek]="1"
+                [formField]="$any(formData.extraOrdinaryStartedAt)">
+            </p-datepicker>
+            <small [appErrorMessage]="$any(formData.extraOrdinaryStartedAt)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="extraOrdinaryEndedAt"
+                label="Fin periodo extraordinario"
+                [field]="$any(formData.extraOrdinaryEndedAt)">
+            </label>
+            <p-datepicker
+                id="extraOrdinaryEndedAt"
+                dateFormat="yy-mm-dd"
+                [showButtonBar]="true"
+                [firstDayOfWeek]="1"
+                [minDate]="form$().extraOrdinaryStartedAt"
+                [formField]="$any(formData.extraOrdinaryEndedAt)">
+            </p-datepicker>
+            <small [appErrorMessage]="$any(formData.extraOrdinaryEndedAt)"></small>
+        </div>
+
+        <!-- Matrícula especial -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="especialStartedAt"
+                label="Inicio periodo especial"
+                [field]="$any(formData.especialStartedAt)">
+            </label>
+            <p-datepicker
+                id="especialStartedAt"
+                dateFormat="yy-mm-dd"
+                [showButtonBar]="true"
+                [firstDayOfWeek]="1"
+                [formField]="$any(formData.especialStartedAt)">
+            </p-datepicker>
+            <small [appErrorMessage]="$any(formData.especialStartedAt)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="especialEndedAt"
+                label="Fin periodo especial"
+                [field]="$any(formData.especialEndedAt)">
+            </label>
+            <p-datepicker
+                id="especialEndedAt"
+                dateFormat="yy-mm-dd"
+                [showButtonBar]="true"
+                [firstDayOfWeek]="1"
+                [minDate]="form$().especialStartedAt"
+                [formField]="$any(formData.especialEndedAt)">
+            </p-datepicker>
+            <small [appErrorMessage]="$any(formData.especialEndedAt)"></small>
+        </div>
+
+    </form>
+</div>

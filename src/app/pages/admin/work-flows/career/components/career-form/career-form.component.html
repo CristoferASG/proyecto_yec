@@ -1,17 +1,176 @@
-<app-principal-data/>
-
-<app-secondary-data/>
-
 <div class="custom-form-card">
-    <div class="custom-form-grid md:grid-cols-12">
-        <div class="custom-form-field md:col-span-6 md:col-start-4">
-            <p-button
-                label="Guardar"
-                [icon]="CustomIcons.FLOPPY_DISK_REGULAR"
-                styleClass="w-full"
-                (onClick)="onSubmit()"/>
-        </div>
-    </div>
-</div>
+    <form class="custom-form-grid md:grid-cols-12">
 
-{{ careerCreateStore.formState() | json }}
+        <div class="custom-form-section md:col-span-12">
+            <h4>Registro de Carrera</h4>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="code"
+                label="Código"
+                [field]="formData.code">
+            </label>
+
+            <input pInputText id="code" [formField]="formData.code">
+
+            <small [appErrorMessage]="$any(formData.code)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="codeSniese"
+                label="Código SNIESE"
+                [field]="formData.codeSniese">
+            </label>
+
+            <input pInputText id="codeSniese" [formField]="formData.codeSniese">
+
+            <small [appErrorMessage]="$any(formData.codeSniese)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="name"
+                label="Nombre"
+                [field]="formData.name">
+            </label>
+
+            <input pInputText id="name" [formField]="formData.name">
+
+            <small [appErrorMessage]="$any(formData.name)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="shortName"
+                label="Nombre Corto"
+                [field]="formData.shortName">
+            </label>
+
+            <input pInputText id="shortName" [formField]="formData.shortName">
+
+            <small [appErrorMessage]="$any(formData.shortName)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="degree"
+                label="Título"
+                [field]="formData.degree">
+            </label>
+
+            <input pInputText id="degree" [formField]="formData.degree">
+
+            <small [appErrorMessage]="$any(formData.degree)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="acronym"
+                label="Siglas"
+                [field]="formData.acronym">
+            </label>
+
+            <input pInputText id="acronym" [formField]="formData.acronym">
+
+            <small [appErrorMessage]="$any(formData.acronym)"></small>
+        </div>
+
+        <!-- modality -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="modality"
+                label="Modalidad"
+                [field]="formData.modality">
+            </label>
+
+            <p-select
+                id="modality"
+                dataKey="id"
+                [formField]="$any(formData.modality)"
+                [options]="modalities()"
+                optionLabel="name"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.modality)"></small>
+        </div>
+
+        <!-- type -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="type"
+                label="Tipo"
+                [field]="formData.type">
+            </label>
+
+            <p-select
+                id="type"
+                dataKey="id"
+                [formField]="$any(formData.type)"
+                [options]="types()"
+                optionLabel="name"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.type)"></small>
+        </div>
+
+        <!-- institution -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="institution"
+                label="Institución"
+                [field]="formData.institution">
+            </label>
+
+            <p-select
+                id="institution"
+                dataKey="id"
+                [formField]="$any(formData.institution)"
+                [options]="institutions()"
+                optionLabel="name"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.institution)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="resolutionNumber"
+                label="Número de Resolución"
+                [field]="formData.resolutionNumber">
+            </label>
+
+            <input pInputText id="resolutionNumber" [formField]="formData.resolutionNumber">
+
+            <small [appErrorMessage]="$any(formData.resolutionNumber)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="logo"
+                label="Logo (URL)"
+                [field]="formData.logo">
+            </label>
+
+            <input pInputText id="logo" [formField]="formData.logo">
+
+            <small [appErrorMessage]="$any(formData.logo)"></small>
+        </div>
+
+    </form>
+</div>

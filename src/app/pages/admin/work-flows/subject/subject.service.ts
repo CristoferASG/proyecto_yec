@@ -4,38 +4,44 @@ import {HttpResponseInterface} from "@utils/interfaces";
 import {map} from "rxjs/operators";
 import {environment} from "@env/environment";
 import {Observable} from "rxjs";
-import {CareerInterface, CareerState} from "./career.state";
+import {SubjectInterface, SubjectState} from "./subject.state";
 
 @Injectable({providedIn: 'root'})
-export class CareerService {
+export class SubjectService {
     private readonly httpClient = inject(HttpClient);
-    private readonly apiUrl = `${environment.API_URL}/career`;
+    private readonly apiUrl = `${environment.API_URL}/subject`;
 
-    createCareer(payload: CareerState): Observable<CareerInterface> {
+    createSubject(payload: SubjectState) {
         const url = this.apiUrl;
 
         return this.httpClient.post<HttpResponseInterface>(url, payload).pipe(
-            map((response) => response.data)
+            map((response) => {
+                return response.data;
+            })
         );
     }
 
-    updateCareer(id: string, payload: CareerState): Observable<CareerInterface> {
+    updateSubject(id: string, payload: SubjectState) {
         const url = `${this.apiUrl}/${id}`;
 
         return this.httpClient.put<HttpResponseInterface>(url, payload).pipe(
-            map((response) => response.data)
+            map((response) => {
+                return response.data;
+            })
         );
     }
 
-    deleteCareer(id: string): Observable<CareerInterface> {
+    deleteSubject(id: string) {
         const url = `${this.apiUrl}/${id}`;
 
         return this.httpClient.delete<HttpResponseInterface>(url).pipe(
-            map((response) => response.data)
+            map((response) => {
+                return response.data;
+            })
         );
     }
 
-    findCareer(page = 1, search = ''): Observable<HttpResponseInterface> {
+    findSubject(page: number, search: string): Observable<HttpResponseInterface> {
         const url = this.apiUrl;
 
         let params = new HttpParams()
@@ -46,15 +52,19 @@ export class CareerService {
         }
 
         return this.httpClient.get<HttpResponseInterface>(url, {params}).pipe(
-            map((response) => response)
+            map((response) => {
+                return response;
+            })
         );
     }
 
-    findOneCareer(id: string): Observable<CareerInterface> {
+    findOneSubject(id: string): Observable<SubjectState> {
         const url = `${this.apiUrl}/${id}`;
 
         return this.httpClient.get<HttpResponseInterface>(url).pipe(
-            map((response) => response.data)
+            map((response) => {
+                return response.data;
+            })
         );
     }
 }

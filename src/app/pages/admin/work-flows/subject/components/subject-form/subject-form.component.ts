@@ -4,58 +4,77 @@ import {ActivatedRoute} from '@angular/router';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 import {InputText} from 'primeng/inputtext';
+import {InputNumber} from 'primeng/inputnumber';
+import {ToggleSwitch} from 'primeng/toggleswitch';
 import {Select} from 'primeng/select';
+import {MultiSelect} from 'primeng/multiselect';
 
 import {LabelDirective} from '@utils/directives/label.directive';
 import {ErrorMessageDirective} from '@utils/directives/error-message.directive';
 import {FormRegistryService} from '@utils/services/form-registry.service';
 
-import {CareerStore} from '../../career.store';
-import {CareerData, CatalogueOption} from '../../career.state';
-import {applyCareerValidators} from './career-form.validation';
+import {SubjectStore} from '../../subject.store';
+import {SubjectForm} from '../../subject.state';
+import {CatalogueOption, SubjectOption} from '../../subject.state';
+import {applySubjectValidators} from './subject-form.validation';
 
-const FORM_STATE_KEY = 'career';
+const FORM_STATE_KEY = 'subjectForm';
 
 @Component({
-    selector: 'app-career-form',
+    selector: 'app-subject-form',
     imports: [
         InputText,
+        InputNumber,
+        ToggleSwitch,
         Select,
+        MultiSelect,
         FormField,
         LabelDirective,
         ErrorMessageDirective
     ],
-    templateUrl: './career-form.component.html'
+    templateUrl: './subject-form.component.html'
 })
-export class CareerFormComponent implements OnInit, OnDestroy {
+export class SubjectFormComponent implements OnInit, OnDestroy {
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly route = inject(ActivatedRoute);
-    protected readonly careerStore = inject(CareerStore);
+    protected readonly subjectStore = inject(SubjectStore);
 
     // ==============================
     // Modo solo lectura (view): el form-section lee el query param ?mode=view
     // directamente de la ruta con toSignal (Angular 21), SIN necesidad de que
-    // el container se lo reenvíe. Mantiene la estructura del modelo subject/
-    // institution (<app-career-form/> sin bindings) y a la vez habilita el modo view.
+    // el container se lo reenvíe. Mantiene la estructura del modelo career
+    // (<app-subject-form/> sin bindings) y a la vez habilita el modo view.
     // ==============================
     private readonly queryParams = toSignal(this.route.queryParams, {initialValue: {} as Record<string, string>});
     protected readonly isViewMode = computed(() => this.queryParams()?.['mode'] === 'view');
 
-    protected readonly form$: WritableSignal<CareerData> = signal(this.careerStore.career());
-    protected readonly formData: FieldTree<CareerData> = this.buildForm();
+    protected readonly form$: WritableSignal<SubjectForm> = signal(this.subjectStore.subjectForm());
+    protected readonly formData: FieldTree<SubjectForm> = this.buildForm();
     private formInitialized: boolean = false;
 
     // ==============================
-    // Catálogos para los <p-select> del form.
-    // Hoy están vacíos: se llenan desde el backend (CatalogueService por tipo
-    // para modalidad/tipo; InstitutionService.findInstitution para institución).
-    // Se dejan como signals listos para cablear cuando existan esos endpoints.
+    // Catálogos quemados (mock) mientras no hay conexión a backend para catálogos.
     // ==============================
-    protected readonly modalities = signal<CatalogueOption[]>([]);
+    protected readonly academicPeriods = signal<CatalogueOption[]>([
+        {id: '1', name: 'Primer Nivel'},
+        {id: '2', name: 'Segundo Nivel'},
+        {id: '3', name: 'Tercer Nivel'}
+    ]);
 
-    protected readonly types = signal<CatalogueOption[]>([]);
+    protected readonly types = signal<CatalogueOption[]>([
+        {id: '1', name: 'Obligatoria'},
+        {id: '2', name: 'Optativa'}
+    ]);
 
-    protected readonly institutions = signal<CatalogueOption[]>([]);
+    protected readonly subjectPrerequisites = signal<SubjectOption[]>([
+        {id: '1', name: 'Programación I'},
+        {id: '2', name: 'Matemáticas Discretas'}
+    ]);
+
+    protected readonly subjectCorequisites = signal<SubjectOption[]>([
+        {id: '3', name: 'Bases de Datos I'},
+        {id: '4', name: 'Estructuras de Datos'}
+    ]);
 
     constructor() {
         this.initializeData();
@@ -64,7 +83,7 @@ export class CareerFormComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.formRegistryService.register(
-            'Carrera',
+            'Asignatura',
             FORM_STATE_KEY,
             this.formData,
             this.form$()
@@ -77,11 +96,11 @@ export class CareerFormComponent implements OnInit, OnDestroy {
 
     // ==============================
     // Lectura store -> form local: solo la PRIMERA vez, para no pisar la
-    // edición del usuario cuando el store reemite. (Patrón de subject/principal-data.)
+    // edición del usuario cuando el store reemite. (Patrón de principal-data.)
     // ==============================
     private initializeData(): void {
         effect(() => {
-            const data = this.careerStore.career();
+            const data = this.subjectStore.subjectForm();
 
             if (!this.formInitialized) {
                 this.form$.set(data);
@@ -97,13 +116,13 @@ export class CareerFormComponent implements OnInit, OnDestroy {
     // ==============================
     private watchFormChanges(): void {
         effect(() => {
-            this.careerStore.updateSection(FORM_STATE_KEY, this.form$());
+            this.subjectStore.updateSection(FORM_STATE_KEY, this.form$());
         });
     }
 
-    private buildForm(): FieldTree<CareerData> {
-        return form<CareerData>(this.form$, (schema: SchemaPathTree<CareerData>) => {
-            applyCareerValidators(schema, () => this.isViewMode());
+    private buildForm(): FieldTree<SubjectForm> {
+        return form<SubjectForm>(this.form$, (schema: SchemaPathTree<SubjectForm>) => {
+            applySubjectValidators(schema, () => this.isViewMode());
         });
     }
 }

@@ -3,36 +3,54 @@ import {MY_ROUTES} from '@routes';
 import {
     CareerListComponent
 } from "@modules/admin/work-flows/career/components/career-list/career-list.component";
-import {CareerFormComponent} from "@modules/admin/work-flows/career/components/career-form/career-form.component";
-import {SubjectsFormComponent} from "@modules/admin/work-flows/subjects/components/subjects-form/components/subjects-form/subjects-form.component";
-import {SubjectsListComponent} from "@modules/admin/work-flows/subjects/components/subjects-list/subjects-list.component";
-import { InstitutionListComponent } from './work-flows/institution/institution-list/institution-list-component';
+import {CareerContainerComponent} from "@modules/admin/work-flows/career/components/career-container/career-container.component";
+import {SubjectContainerComponent} from "@modules/admin/work-flows/subject/components/subject-container/subject-container.component";
+import {SubjectListComponent} from "@modules/admin/work-flows/subject/components/subject-list/subject-list.component";
+import {SchoolPeriodContainerComponent} from "@modules/admin/work-flows/school-period/components/school-period-container/school-period-container.component";
+import {SchoolPeriodListComponent} from "@modules/admin/work-flows/school-period/components/school-period-list/school-period-list.component";
+import { InstitutionListComponent } from "@modules/admin/work-flows/institution/components/institution-list/institution-list-component";
+import {InstitutionContainerComponent} from "@modules/admin/work-flows/institution/components/institution-container/institution-container.component";
 
 export default [
     {
-        path: MY_ROUTES.adminPages.user.base,
-        title: 'Listado de Usuarios',
+        path: MY_ROUTES.adminPages.career.base,
+        title: 'Listado de Carreras',
         loadComponent: () => CareerListComponent
     },
     {
-        path: MY_ROUTES.adminPages.user.form.base,
-        title: 'Listado de Usuarios',
-        loadComponent: () => CareerFormComponent
+        path: MY_ROUTES.adminPages.career.form.base + '/:id',
+        title: 'Registro de Carrera',
+        loadComponent: () => CareerContainerComponent
     },
     {
         path: MY_ROUTES.adminPages.subject.base,
         title: 'Listado de Asignaturas',
-        loadComponent: () => SubjectsListComponent
+        loadComponent: () => SubjectListComponent
     },
     {
         path: MY_ROUTES.adminPages.subject.form.base + '/:id',
         title: 'Registro de Asignatura',
-        loadComponent: () => SubjectsFormComponent
+        loadComponent: () => SubjectContainerComponent
     },
     {
         path: MY_ROUTES.adminPages.institution.base,
         title: 'Listado de Instituciones',
         loadComponent: () => InstitutionListComponent
+    },
+    {
+        path: MY_ROUTES.adminPages.institution.form.base + '/:id',
+        title: 'Registro de Institución',
+        loadComponent: () => InstitutionContainerComponent
+    },
+    {
+        path: MY_ROUTES.adminPages.schoolPeriod.base,
+        title: 'Periodos Lectivos',
+        loadComponent: () => SchoolPeriodListComponent
+    },
+    {
+        path: MY_ROUTES.adminPages.schoolPeriod.form.base + '/:id',
+        title: 'Registro de Periodo Lectivo',
+        loadComponent: () => SchoolPeriodContainerComponent
     }
 
 

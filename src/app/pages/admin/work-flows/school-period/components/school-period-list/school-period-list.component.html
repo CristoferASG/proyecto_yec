@@ -2,12 +2,13 @@
     #dt
     [value]="items()"
     [tableStyle]="{ 'min-width': '50rem' }"
-    stripedRows>
+    stripedRows
+>
     <ng-template #caption>
         <div class="custom-form-grid">
             <div class="custom-form-grid md:grid-cols-12">
                 <div class="custom-form-field md:col-span-8">
-                    <h2>Listado de Carreras</h2>
+                    <h2>Periodos Lectivos</h2>
                 </div>
 
                 <div class="custom-form-field md:col-span-4">
@@ -35,17 +36,18 @@
 
     <ng-template #header>
         <tr>
-            <th>Código</th>
             <th>Nombre</th>
-            <th>Nombre Corto</th>
-            <th>Título</th>
-            <th>Modalidad</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Estado</th>
+            <th>Visible</th>
             <th>
                 <p-button
                     pTooltip="Crear"
                     [icon]="CustomIcons.PLUS_SOLID"
                     severity="success"
-                    (onClick)="goToCreate()"/>
+                    (onClick)="goToCreate()"
+                />
             </th>
         </tr>
     </ng-template>
@@ -55,11 +57,11 @@
         let-item
         let-rowIndex="rowIndex">
         <tr>
-            <td>{{ item.code }}</td>
             <td>{{ item.name }}</td>
-            <td>{{ item.shortName }}</td>
-            <td>{{ item.degree }}</td>
-            <td>{{ item.modality?.name }}</td>
+            <td>{{ item.startedAt | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ item.endedAt | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ item.state?.name }}</td>
+            <td>{{ item.isVisible ? 'Sí' : 'No' }}</td>
             <td>
                 <p-button
                     pTooltip="Gestionar"

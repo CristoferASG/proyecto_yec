@@ -1,0 +1,215 @@
+<div class="custom-form-card">
+    <form class="custom-form-grid md:grid-cols-12">
+
+        <div class="custom-form-section md:col-span-12">
+            <h4>Registro de Asignatura</h4>
+        </div>
+
+        <div class="custom-form-field md:col-span-2">
+            <label
+                appLabel
+                for="isEnabled"
+                label="Activo"
+                [field]="formData.isEnabled">
+            </label>
+            <p-toggleswitch id="isEnabled" [formField]="formData.isEnabled"></p-toggleswitch>
+            <small [appErrorMessage]="$any(formData.isEnabled)"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-2">
+
+            <label
+                appLabel
+                for="isVisible"
+                label="Visible"
+                [field]="formData.isVisible">
+            </label>
+
+            <p-toggleswitch id="isVisible" [formField]="formData.isVisible"></p-toggleswitch>
+
+            <small [appErrorMessage]="$any(formData.isVisible)"></small>
+            
+        </div>
+
+        <!-- academicPeriod -->
+        <div class="custom-form-field md:col-span-4">
+
+            <label
+                appLabel
+                for="academicPeriod"
+                label="Periodo académico"
+                [field]="formData.academicPeriod">
+            </label>
+
+            <p-select
+                id="academicPeriod"
+                dataKey="id"
+                [formField]="$any(formData.academicPeriod)"
+                [options]="academicPeriods()"
+                optionLabel="name"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.academicPeriod)"></small>
+        </div>
+
+        <!-- type -->
+        <div class="custom-form-field md:col-span-4">
+
+            <label
+                appLabel
+                for="type"
+                label="Tipo"
+                [field]="formData.type">
+            </label>
+
+            <p-select
+                id="type"
+                dataKey="id"
+                [formField]="$any(formData.type)"
+                [options]="types()"
+                optionLabel="name"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.type)"></small>
+        </div>
+
+        <!-- code -->
+        <div class="custom-form-field md:col-span-4">
+
+            <label
+                appLabel
+                for="code"
+                label="Código"
+                [field]="formData.code">
+            </label>
+
+            <input pInputText id="code" [formField]="formData.code">
+
+            <small [appErrorMessage]="$any(formData.code)"></small>
+        </div>
+
+        <!-- name -->
+        <div class="custom-form-field md:col-span-8">
+
+            <label
+                appLabel
+                for="name"
+                label="Nombre"
+                [field]="formData.name">
+            </label>
+
+            <input pInputText id="name" [formField]="formData.name">
+
+            <small [appErrorMessage]="$any(formData.name)"></small>
+        </div>
+
+        <!-- credits -->
+        <div class="custom-form-field md:col-span-3">
+
+            <label
+                appLabel
+                for="credits"
+                label="Créditos"
+                [field]="formData.credits">
+            </label>
+
+            <p-inputnumber id="credits" [formField]="$any(formData.credits)" [max]="1000" [showButtons]="true"></p-inputnumber>
+
+            <small [appErrorMessage]="$any(formData.credits)"></small>
+        </div>
+
+        <!-- teacherHour -->
+        <div class="custom-form-field md:col-span-3">
+
+            <label
+                appLabel
+                for="teacherHour"
+                label="Horas docente"
+                [field]="formData.teacherHour">
+            </label>
+
+            <p-inputnumber id="teacherHour" [formField]="$any(formData.teacherHour)" [max]="1000" [showButtons]="true"></p-inputnumber>
+
+            <small [appErrorMessage]="$any(formData.teacherHour)"></small>
+        </div>
+
+        <!-- practicalHour -->
+        <div class="custom-form-field md:col-span-3">
+
+            <label
+                appLabel
+                for="practicalHour"
+                label="Horas prácticas"
+                [field]="formData.practicalHour">
+            </label>
+
+            <p-inputnumber id="practicalHour" [formField]="$any(formData.practicalHour)" [max]="1000" [showButtons]="true"></p-inputnumber>
+
+            <small [appErrorMessage]="$any(formData.practicalHour)"></small>
+        </div>
+
+        <!-- autonomousHour -->
+        <div class="custom-form-field md:col-span-3">
+
+            <label
+                appLabel
+                for="autonomousHour"
+                label="Horas autónomas"
+                [field]="formData.autonomousHour">
+            </label>
+
+            <p-inputnumber id="autonomousHour" [formField]="$any(formData.autonomousHour)" [max]="1000" [showButtons]="true"></p-inputnumber>
+
+            <small [appErrorMessage]="$any(formData.autonomousHour)"></small>
+        </div>
+
+        <!-- subjectPrerequisites -->
+        <div class="custom-form-field md:col-span-6">
+
+            <label
+                appLabel
+                for="subjectPrerequisites"
+                label="Prerequisitos"
+                [field]="formData.subjectPrerequisites">
+            </label>
+
+            <p-multiselect
+                id="subjectPrerequisites"
+                dataKey="id"
+                [formField]="formData.subjectPrerequisites"
+                [options]="subjectPrerequisites()"
+                display="chip"
+                optionLabel="name"
+                placeholder="Seleccione...">
+            </p-multiselect>
+
+            <small [appErrorMessage]="$any(formData.subjectPrerequisites)"></small>
+        </div>
+
+        <!-- subjectCorequisites -->
+        <div class="custom-form-field md:col-span-6">
+
+            <label
+                appLabel
+                for="subjectCorequisites"
+                label="Corequisitos"
+                [field]="formData.subjectCorequisites">
+            </label>
+
+            <p-multiselect
+                id="subjectCorequisites"
+                dataKey="id"
+                [formField]="formData.subjectCorequisites"
+                [options]="subjectCorequisites()"
+                display="chip"
+                optionLabel="name"
+                placeholder="Seleccione...">
+            </p-multiselect>
+
+            <small [appErrorMessage]="$any(formData.subjectCorequisites)"></small>
+        </div>
+
+    </form>
+</div>

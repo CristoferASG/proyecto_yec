@@ -1,63 +1,39 @@
-import { Injectable, signal } from '@angular/core';
+import {computed, Injectable, signal} from "@angular/core";
+import {INSTITUTION_INITIAL_STATE, InstitutionState, SECTION_KEYS} from "./institution.state";
+import {pickKeys} from "@utils/helpers/pickKeys.helper";
 
-import {
-  INITIAL_INSTITUTION_STATE,
-  InstitutionInterface,
-  InstitutionState
-} from './institution.state';
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class InstitutionStore {
-  readonly formState = signal<InstitutionState>(
-    INITIAL_INSTITUTION_STATE
-  );
+    // Estado principal del formulario usando Signal
+    readonly formState = signal<InstitutionState>(INSTITUTION_INITIAL_STATE);
 
-  updateForm(data: Partial<InstitutionState>): void {
-    this.formState.update((state) => ({
-      ...state,
-      ...data
-    }));
-  }
+    // Sección del formulario (clave 'institution')
+    readonly institution = computed(() => this.formState().institution);
 
-  loadInstitution(data: InstitutionInterface): void {
-    this.formState.set({
-      name: data.name,
-      denomination: data.denomination,
-      shortName: data.shortName,
+    // Actualiza la sección del formulario con whitelisting de keys.
+    updateSection<K extends keyof InstitutionState>(
+        section: K,
+        data: Partial<InstitutionState[K]>
+    ): void {
+        const allowedKeys = SECTION_KEYS[section];
+        const filtered = pickKeys(data, allowedKeys);
 
-      cellphone: data.cellphone,
-      phone: data.phone,
-      email: data.email,
-      web: data.web,
+        this.formState.update(state => ({
+            ...state,
+            [section]: {
+                ...state[section],
+                ...filtered
+            }
+        }));
+    }
 
-      logo: data.logo,
-      state: data.state,
-      isVisible: data.isVisible,
+    // Resetea el formulario al estado inicial
+    resetForm(): void {
+        this.formState.set(INSTITUTION_INITIAL_STATE);
+    }
 
-      code: data.code,
-      codeSniese: data.codeSniese,
-      acronym: data.acronym,
-      slogan: data.slogan
-    });
-  }
-
-  resetForm(): void {
-    this.formState.set({
-      ...INITIAL_INSTITUTION_STATE
-    });
-  }
+    // Obtener valor actual del formulario
+    getFormValue(): InstitutionState {
+        return this.formState();
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,76 +1,83 @@
-export interface CareerState {
-    principalData: PrincipalData;
-    secondaryData: SecondaryData;
+// ==============================
+// Catálogos / Opciones auxiliares
+// ==============================
+export interface CatalogueOption {
+    id: string;
+    name: string;
 }
 
-export interface PrincipalData {
+// ==============================
+// Datos del formulario (planos, sin anidación en el backend original)
+// Campos derivados de CareerModel del front antiguo (excepto userId, que se
+// resuelve en backend por sesión y no es campo de UI).
+//
+// NOTA: `state`/`isEnabled`/`isVisible` se omiten del modelo de formulario
+// por decisión de dominio: el estado, la activación y la visibilidad los
+// gestiona el backend (no son campos de UI que el usuario编辑). El back los
+// define y los retorna en el DTO de listado/detalle.
+// ==============================
+export interface CareerData {
     code: string;
+    codeSniese: string;
     name: string;
+    shortName: string;
     degree: string;
     acronym: string;
-}
-
-export interface PrincipalData1 {
-    career: CareerInterface;
-    schoolPeriod: SchoolPeriodInterface;
-}
-
-export interface SecondaryData {
-    code: string;
-    shortName: string;
     logo: string;
     resolutionNumber: string;
-    institution: InstitutionInterface | null;
+    modality: CatalogueOption | null;   // FK catálogo
+    type: CatalogueOption | null;        // FK catálogo
+    institution: CatalogueOption | null; // FK institución
 }
 
-export interface CareerInterface {
-    id: string;
-    code: string;
-    shortName: string;
-    logo: string;
-    resolutionNumber: string;
-    isEnabled: boolean;
+// ==============================
+// Estado del formulario con sección (para consistencia con subject/institution)
+// ==============================
+export interface CareerState {
+    career: CareerData;
 }
 
-export interface SchoolPeriodInterface {
-    id: string;
-    code: string;
-    shortName: string;
-    logo: string;
-    resolutionNumber: string;
-    isEnabled: boolean;
-}
-
-interface InstitutionInterface {
-    code: string;
-    name: string;
-}
-
-export const INITIAL_STATE: CareerState = {
-    principalData: {
-        code: '',
-        name: '',
-        degree: '',
-        acronym: ''
-    },
-
-    secondaryData: {
-        code: '',
-        shortName: '',
-        logo: '',
-        resolutionNumber: '',
-        institution: null
-    },
-};
-
-export const PRINCIPAL_DATA_KEYS = ['code', 'name', 'degree', 'acronym'] as const satisfies (keyof PrincipalData)[];
-export const SECONDARY_DATA_KEYS = ['code', 'shortName', 'logo', 'resolutionNumber'] as const satisfies (keyof SecondaryData)[];
+export const CAREER_DATA_KEYS = [
+    'code',
+    'codeSniese',
+    'name',
+    'shortName',
+    'degree',
+    'acronym',
+    'logo',
+    'resolutionNumber',
+    'modality',
+    'type',
+    'institution',
+] as const satisfies (keyof CareerData)[];
 
 type SectionKeysMap = {
     [K in keyof CareerState]: readonly (keyof CareerState[K])[];
 };
 
 export const SECTION_KEYS: SectionKeysMap = {
-    principalData: PRINCIPAL_DATA_KEYS,
-    secondaryData: SECONDARY_DATA_KEYS,
+    career: CAREER_DATA_KEYS,
 };
+
+export const CAREER_INITIAL_STATE: CareerState = {
+    career: {
+        code: '',
+        codeSniese: '',
+        name: '',
+        shortName: '',
+        degree: '',
+        acronym: '',
+        logo: '',
+        resolutionNumber: '',
+        modality: null,
+        type: null,
+        institution: null,
+    },
+};
+
+// ==============================
+// Modelo de dominio (item de lista / DTO retornado por el backend).
+// ==============================
+export interface CareerInterface extends CareerData {
+    id: string;
+}

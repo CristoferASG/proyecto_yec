@@ -19,7 +19,7 @@ import {
 export class InstitutionService {
   private readonly httpClient = inject(HttpClient);
 
-  private readonly apiUrl = `${environment.API_URL}/institutions`;
+  private readonly apiUrl = `${environment.API_URL}/institution`;
 
   createInstitution(payload: InstitutionState): Observable<InstitutionInterface> {
     const url = this.apiUrl;
@@ -48,10 +48,7 @@ export class InstitutionService {
     );
   }
 
-  findInstitutions(
-    page = 1,
-    search = ''
-  ): Observable<HttpResponseInterface> {
+  findInstitution(page = 1, search = ''): Observable<HttpResponseInterface> {
     const url = this.apiUrl;
 
     let params = new HttpParams()
@@ -66,7 +63,7 @@ export class InstitutionService {
     );
   }
 
-  findInstitution(id: string): Observable<InstitutionInterface> {
+  findOneInstitution(id: string): Observable<InstitutionInterface> {
     const url = `${this.apiUrl}/${id}`;
 
     return this.httpClient.get<HttpResponseInterface>(url).pipe(
