@@ -86,7 +86,7 @@ export class CareerListComponent implements OnInit {
      * sincroniza `items` + `pagination` con la respuesta.
      */
     private findCareer(page = 1, search = '') {
-        this.careerService.findCareer(page, search).subscribe({
+        this.careerService.findCareers(page, search).subscribe({
             next: (response) => {
                 this.items.set(response.data ?? []);
                 this.pagination.update(curr => ({

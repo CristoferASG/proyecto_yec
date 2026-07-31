@@ -1,7 +1,7 @@
 // ==============================
 // Catálogos / Opciones auxiliares
 // ==============================
-export interface CatalogueOption {
+export interface AuxiliaryOption {
     id: string;
     name: string;
 }
@@ -25,9 +25,9 @@ export interface CareerData {
     acronym: string;
     logo: string;
     resolutionNumber: string;
-    modality: CatalogueOption | null;   // FK catálogo
-    type: CatalogueOption | null;        // FK catálogo
-    institution: CatalogueOption | null; // FK institución
+    modality: AuxiliaryOption | null;   // FK catálogo
+    type: AuxiliaryOption | null;        // FK catálogo
+    institution: AuxiliaryOption | null; // FK institución
 }
 
 // ==============================

@@ -60,7 +60,7 @@ export class InstitutionContainerComponent implements OnInit {
      * Carga el registro a editar/ver desde el backend.
      */
     private loadData() {
-        this.institutionService.findOneInstitution(this.id()).subscribe({
+        this.institutionService.findInstitution(this.id()).subscribe({
             next: (response) => {
                 this.institutionStore.updateSection(FORM_STATE_KEY, response);
             }

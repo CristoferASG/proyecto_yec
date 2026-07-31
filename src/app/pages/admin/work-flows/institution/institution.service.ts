@@ -48,7 +48,7 @@ export class InstitutionService {
     );
   }
 
-  findInstitution(page = 1, search = ''): Observable<HttpResponseInterface> {
+  findInstitutions(page = 1, search = ''): Observable<HttpResponseInterface> {
     const url = this.apiUrl;
 
     let params = new HttpParams()
@@ -63,7 +63,7 @@ export class InstitutionService {
     );
   }
 
-  findOneInstitution(id: string): Observable<InstitutionInterface> {
+  findInstitution(id: string): Observable<InstitutionInterface> {
     const url = `${this.apiUrl}/${id}`;
 
     return this.httpClient.get<HttpResponseInterface>(url).pipe(

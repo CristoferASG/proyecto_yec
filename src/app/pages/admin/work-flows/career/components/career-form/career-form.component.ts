@@ -11,7 +11,7 @@ import {ErrorMessageDirective} from '@utils/directives/error-message.directive';
 import {FormRegistryService} from '@utils/services/form-registry.service';
 
 import {CareerStore} from '../../career.store';
-import {CareerData, CatalogueOption} from '../../career.state';
+import {CareerData, AuxiliaryOption} from '../../career.state';
 import {applyCareerValidators} from './career-form.validation';
 
 const FORM_STATE_KEY = 'career';
@@ -51,11 +51,11 @@ export class CareerFormComponent implements OnInit, OnDestroy {
     // para modalidad/tipo; InstitutionService.findInstitution para institución).
     // Se dejan como signals listos para cablear cuando existan esos endpoints.
     // ==============================
-    protected readonly modalities = signal<CatalogueOption[]>([]);
+    protected readonly modalities = signal<AuxiliaryOption[]>([]);
 
-    protected readonly types = signal<CatalogueOption[]>([]);
+    protected readonly types = signal<AuxiliaryOption[]>([]);
 
-    protected readonly institutions = signal<CatalogueOption[]>([]);
+    protected readonly institutions = signal<AuxiliaryOption[]>([]);
 
     constructor() {
         this.initializeData();

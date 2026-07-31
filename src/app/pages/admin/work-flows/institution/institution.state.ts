@@ -79,4 +79,4 @@ export const INSTITUTION_INITIAL_STATE: InstitutionState = {
 // ==============================
 export interface InstitutionInterface extends InstitutionData {
   id: string;
-}
+} 

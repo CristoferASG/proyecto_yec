@@ -86,7 +86,7 @@ export class InstitutionListComponent implements OnInit {
    * y sincroniza `items` + `pagination` con la respuesta.
    */
   private findInstitution(page = 1, search = '') {
-    this.institutionService.findInstitution(page, search).subscribe({
+    this.institutionService.findInstitutions(page, search).subscribe({
       next: (response) => {
         this.items.set(response.data ?? []);
         this.pagination.update(curr => ({

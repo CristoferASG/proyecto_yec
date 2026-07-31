@@ -60,7 +60,7 @@ export class CareerContainerComponent implements OnInit {
      * Carga el registro a editar/ver desde el backend.
      */
     private loadData() {
-        this.careerService.findOneCareer(this.id()).subscribe({
+        this.careerService.findCareer(this.id()).subscribe({
             next: (response) => {
                 this.careerStore.updateSection(FORM_STATE_KEY, response);
             }

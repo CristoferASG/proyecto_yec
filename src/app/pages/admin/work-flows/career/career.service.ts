@@ -35,7 +35,7 @@ export class CareerService {
         );
     }
 
-    findCareer(page = 1, search = ''): Observable<HttpResponseInterface> {
+    findCareers(page = 1, search = ''): Observable<HttpResponseInterface> {
         const url = this.apiUrl;
 
         let params = new HttpParams()
@@ -50,7 +50,7 @@ export class CareerService {
         );
     }
 
-    findOneCareer(id: string): Observable<CareerInterface> {
+    findCareer(id: string): Observable<CareerInterface> {
         const url = `${this.apiUrl}/${id}`;
 
         return this.httpClient.get<HttpResponseInterface>(url).pipe(
