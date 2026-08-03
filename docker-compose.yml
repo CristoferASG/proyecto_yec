@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7
+    container_name: yec_redis
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "root"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  minio:
+    image: minio/minio:latest
+    container_name: yec_minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: root1234
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"   # API S3
+      - "9001:9001"   # Consola web de administración
+    volumes:
+      - minio_data:/data
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: yec_redisinsight
+    restart: unless-stopped
+    ports:
+      - "5540:5540"   # Interfaz web
+    volumes:
+      - redisinsight_data:/data
+    depends_on:
+      - redis
+
+volumes:
+  redis_data:
+  minio_data:
+  redisinsight_data:
