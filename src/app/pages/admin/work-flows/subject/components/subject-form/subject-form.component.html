@@ -1,0 +1,196 @@
+<div class="custom-form-card">
+    <form class="custom-form-grid md:grid-cols-12">
+
+        <!-- Encabezado -->
+        <div class="custom-form-section md:col-span-12">
+            <h4>Registro de Asignatura</h4>
+        </div>
+
+        <!-- Código -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="code"
+                label="Código"
+                [field]="formData.code">
+            </label>
+
+            <input pInputText id="code" [formField]="formData.code">
+
+            <small [appErrorMessage]="$any(formData.code)"></small>
+        </div>
+
+        <!-- Nombre -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="name"
+                label="Nombre"
+                [field]="formData.name">
+            </label>
+
+            <input pInputText id="name" [formField]="formData.name">
+
+            <small [appErrorMessage]="$any(formData.name)"></small>
+        </div>
+
+        <!-- Periodo académico -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="academicPeriod"
+                label="Periodo Académico"
+                [field]="formData.academicPeriodId">
+            </label>
+
+            <p-select
+                id="academicPeriod"
+                dataKey="id"
+                [formField]="$any(formData.academicPeriodId)"
+                [options]="academicPeriods()"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.academicPeriodId)"></small>
+        </div>
+
+        <!-- Tipo -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="type"
+                label="Tipo"
+                [field]="formData.typeId">
+            </label>
+
+            <p-select
+                id="type"
+                dataKey="id"
+                [formField]="$any(formData.typeId)"
+                [options]="types()"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.typeId)"></small>
+        </div>
+
+        <!-- Carrera -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="career"
+                label="Carrera"
+                [field]="formData.careerId">
+            </label>
+
+            <p-select
+                id="career"
+                dataKey="id"
+                [formField]="$any(formData.careerId)"
+                [options]="careers()"
+                optionLabel="shortName"
+                optionValue="id"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.careerId)"></small>
+        </div>
+
+        <!-- Hora autónoma -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="autonomousHour"
+                label="Hora Autónoma"
+                [field]="formData.autonomousHour">
+            </label>
+
+            <p-inputnumber
+                id="autonomousHour"
+                inputId="autonomousHour"
+                [formField]="$any(formData.autonomousHour)"
+                [min]="0"
+                mode="decimal"
+                [showButtons]="true"/>
+        </div>
+
+        <!-- Hora práctica -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="practicalHour"
+                label="Hora Práctica"
+                [field]="formData.practicalHour">
+            </label>
+
+            <p-inputnumber
+                id="practicalHour"
+                inputId="practicalHour"
+                [formField]="$any(formData.practicalHour)"
+                [min]="0"
+                mode="decimal"
+                [showButtons]="true"/>
+        </div>
+
+        <!-- Hora del docente -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="teacherHour"
+                label="Hora del Docente"
+                [field]="formData.teacherHour">
+            </label>
+
+            <p-inputnumber
+                id="teacherHour"
+                inputId="teacherHour"
+                [formField]="$any(formData.teacherHour)"
+                [min]="0"
+                mode="decimal"
+                [showButtons]="true"/>
+        </div>
+
+        <!-- Créditos -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="credits"
+                label="Créditos"
+                [field]="formData.credits">
+            </label>
+
+            <p-inputnumber
+                id="credits"
+                inputId="credits"
+                [formField]="$any(formData.credits)"
+                [min]="0"
+                mode="decimal"
+                [showButtons]="true"/>
+        </div>
+
+        <!-- Escala -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="scale"
+                label="Escala"
+                [field]="formData.scale">
+            </label>
+
+            <p-inputnumber
+                id="scale"
+                inputId="scale"
+                [formField]="$any(formData.scale)"
+                [min]="0"
+                [max]="1"
+                mode="decimal"
+                [minFractionDigits]="1"
+                [showButtons]="true"/>
+        </div>
+
+    </form>
+</div>

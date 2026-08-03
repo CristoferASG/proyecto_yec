@@ -1,0 +1,49 @@
+<div class="custom-form-card">
+    <form class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-section md:col-span-12">
+            <small class="bg-surface-100">
+                Por favor, responda sus preguntas de seguridad.
+            </small>
+        </div>
+
+        <!-- securityQuestionsField -->
+        @for (questionField of formData.securityQuestions(); track questionField.code().value()) {
+            <div>
+                <label
+                    appLabel
+                    [field]="questionField.answer"
+                    [label]="questionField.question().value().name">
+                </label>
+
+                <input
+                    pInputText
+                    [formField]="questionField.answer"
+                    placeholder="Ingrese su respuesta"/>
+
+                <small [appErrorMessage]="questionField"></small>
+            </div>
+        }
+
+        <!-- emailField -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="email"
+                [field]="formData.email"
+                label="Nuevo Correo electrónico"></label>
+
+            <input pInputText type="email" id="email" [formField]="formData.email"/>
+
+            <small [appErrorMessage]="$any(formData.email)"></small>
+        </div>
+
+        <!-- actions -->
+        <div class="custom-form-field md:col-span-6">
+            <p-button
+                label="Cambiar preguntas"
+                severity="info"
+                [icon]="CustomIcons.ARROWS_ROTATE_SOLID"
+                (onClick)="generateSecurityQuestions()"/>
+        </div>
+    </form>
+</div>

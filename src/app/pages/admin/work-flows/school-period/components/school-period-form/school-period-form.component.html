@@ -1,0 +1,178 @@
+<div class="custom-form-card">
+    <form class="custom-form-grid md:grid-cols-12">
+
+        <!-- Encabezado -->
+        <div class="custom-form-section md:col-span-12">
+            <h4>Registro de Periodo Lectivo</h4>
+        </div>
+
+        <!-- Código -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="code"
+                label="Código"
+                [field]="formData.code">
+            </label>
+
+            <input pInputText id="code" [formField]="formData.code">
+
+            <small [appErrorMessage]="$any(formData.code)"></small>
+        </div>
+
+        <!-- Código SNIESE -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="codeSniese"
+                label="Código SNIESE"
+                [field]="formData.codeSniese">
+            </label>
+
+            <input pInputText id="codeSniese" [formField]="formData.codeSniese">
+
+            <small [appErrorMessage]="$any(formData.codeSniese)"></small>
+        </div>
+
+        <!-- Nombre -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="name"
+                label="Nombre"
+                [field]="formData.name">
+            </label>
+
+            <input pInputText id="name" [formField]="formData.name">
+
+            <small [appErrorMessage]="$any(formData.name)"></small>
+        </div>
+
+        <!-- Nombre corto -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="shortName"
+                label="Nombre Corto"
+                [field]="formData.shortName">
+            </label>
+
+            <input pInputText id="shortName" [formField]="formData.shortName">
+
+            <small [appErrorMessage]="$any(formData.shortName)"></small>
+        </div>
+
+        <!-- Inicio del periodo -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="startedAt"
+                label="Inicio del Periodo"
+                [field]="formData.startedAt">
+            </label>
+
+            <input type="date" id="startedAt" [formField]="formData.startedAt">
+
+            <small [appErrorMessage]="$any(formData.startedAt)"></small>
+        </div>
+
+        <!-- Fin del periodo -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="endedAt"
+                label="Fin del Periodo"
+                [field]="formData.endedAt">
+            </label>
+
+            <input type="date" id="endedAt" [formField]="formData.endedAt">
+
+            <small [appErrorMessage]="$any(formData.endedAt)"></small>
+        </div>
+
+        <!-- Inicio ordinario -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="ordinaryStartedAt"
+                label="Inicio Ordinario"
+                [field]="formData.ordinaryStartedAt">
+            </label>
+
+            <input type="date" id="ordinaryStartedAt" [formField]="formData.ordinaryStartedAt">
+
+            <small [appErrorMessage]="$any(formData.ordinaryStartedAt)"></small>
+        </div>
+
+        <!-- Fin ordinario -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="ordinaryEndedAt"
+                label="Fin Ordinario"
+                [field]="formData.ordinaryEndedAt">
+            </label>
+
+            <input type="date" id="ordinaryEndedAt" [formField]="formData.ordinaryEndedAt">
+
+            <small [appErrorMessage]="$any(formData.ordinaryEndedAt)"></small>
+        </div>
+
+        <!-- Inicio extraordinario -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="extraOrdinaryStartedAt"
+                label="Inicio Extraordinario"
+                [field]="formData.extraOrdinaryStartedAt">
+            </label>
+
+            <input type="date" id="extraOrdinaryStartedAt" [formField]="formData.extraOrdinaryStartedAt">
+
+            <small [appErrorMessage]="$any(formData.extraOrdinaryStartedAt)"></small>
+        </div>
+
+        <!-- Fin extraordinario -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="extraOrdinaryEndedAt"
+                label="Fin Extraordinario"
+                [field]="formData.extraOrdinaryEndedAt">
+            </label>
+
+            <input type="date" id="extraOrdinaryEndedAt" [formField]="formData.extraOrdinaryEndedAt">
+
+            <small [appErrorMessage]="$any(formData.extraOrdinaryEndedAt)"></small>
+        </div>
+
+        <!-- Inicio especial -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="especialStartedAt"
+                label="Inicio Especial"
+                [field]="formData.especialStartedAt">
+            </label>
+
+            <input type="date" id="especialStartedAt" [formField]="formData.especialStartedAt">
+
+            <small [appErrorMessage]="$any(formData.especialStartedAt)"></small>
+        </div>
+
+        <!-- Fin especial -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="especialEndedAt"
+                label="Fin Especial"
+                [field]="formData.especialEndedAt">
+            </label>
+
+            <input type="date" id="especialEndedAt" [formField]="formData.especialEndedAt">
+
+            <small [appErrorMessage]="$any(formData.especialEndedAt)"></small>
+        </div>
+
+    </form>
+</div>

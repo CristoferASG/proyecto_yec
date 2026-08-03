@@ -1,0 +1,55 @@
+<div class="custom-form-card">
+    <form class="custom-form-grid md:grid-cols-12">
+        <!-- section -->
+        <div class="custom-form-section md:col-span-12 text-center">
+            Ingreso
+        </div>
+
+        <!-- username -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel for="username"
+                label="Nombre de usuario"
+                [field]="formData.username"></label>
+
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i [class]="CustomIcons.USER_LOCK_SOLID"></i>
+                </p-inputgroup-addon>
+
+                <input
+                    pInputText
+                    type="text"
+                    id="username"
+                    [formField]="formData.username"/>
+            </p-inputgroup>
+
+            <small [appErrorMessage]="$any(formData.username)"></small>
+        </div>
+
+        <!-- password -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="password"
+                [field]="formData.password"
+                label="Contraseña">
+            </label>
+
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i [class]="CustomIcons.KEY_SOLID"></i>
+                </p-inputgroup-addon>
+
+                <p-password
+                    id="password"
+                    [formField]="$any(formData.password)"
+                    inputStyleClass="w-full"
+                    [toggleMask]="true"
+                    [feedback]="false"/>
+            </p-inputgroup>
+
+            <small [appErrorMessage]="$any(formData.password)"></small>
+        </div>
+    </form>
+</div>
