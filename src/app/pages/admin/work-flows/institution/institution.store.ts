@@ -18,6 +18,10 @@ export class InstitutionStore {
         }));
     }
 
+    reset() {
+        this.formState.set(structuredClone(INITIAL_STATE));
+    }
+
     private loadFromStorage(): InstitutionState {
         const stored = sessionStorage.getItem(FORM_STATE_KEY);
         return stored ? JSON.parse(stored) : INITIAL_STATE;

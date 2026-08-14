@@ -175,13 +175,50 @@
             <label
                 appLabel
                 for="logo"
-                label="Logo (URL)"
-                [field]="formData.logo">
+                label="Logo">
             </label>
 
-            <input pInputText id="logo" [formField]="formData.logo">
+            <input
+                #logoInput
+                id="logo"
+                type="file"
+                accept=".png,.jpg,.jpeg,.webp"
+                class="hidden"
+                (change)="onLogoSelected($event)">
 
-            <small [appErrorMessage]="$any(formData.logo)"></small>
+            <div class="flex items-center gap-3 mt-2">
+                <div class="logo-preview" [class.empty]="!logoPreview()">
+                    @if (logoPreview()) {
+                        <img [src]="logoPreview()" alt="logo">
+                    } @else {
+                        <i class="pi pi-image"></i>
+                    }
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <p-button
+                        type="button"
+                        label="Seleccionar imagen"
+                        icon="pi pi-upload"
+                        severity="secondary"
+                        [outlined]="true"
+                        (onClick)="logoInput.click()">
+                    </p-button>
+
+                    @if (logoPreview()) {
+                        <p-button
+                            type="button"
+                            label="Quitar"
+                            icon="pi pi-times"
+                            severity="danger"
+                            [text]="true"
+                            (onClick)="removeLogo()">
+                        </p-button>
+                    }
+                </div>
+            </div>
+
+            <small>Máximo 2 MB · PNG, JPG, JPEG o WEBP. (Opcional)</small>
         </div>
 
     </form>

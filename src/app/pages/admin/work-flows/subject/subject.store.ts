@@ -18,6 +18,11 @@ export class SubjectStore {
         }));
     }
 
+    /** Limpia el estado del formulario a INITIAL_STATE (lo usa el container al entrar en modo "new"). */
+    reset() {
+        this.formState.set(structuredClone(INITIAL_STATE));
+    }
+
     private loadFromStorage(): SubjectState {
         const stored = sessionStorage.getItem(FORM_STATE_KEY);
         return stored ? JSON.parse(stored) : INITIAL_STATE;

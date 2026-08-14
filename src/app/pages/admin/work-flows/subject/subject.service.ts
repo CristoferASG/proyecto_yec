@@ -24,7 +24,7 @@ export class SubjectService {
 
         return this.httpClient.patch<HttpResponseInterface>(url, payload).pipe(
             map((response) => response.data)
-        );
+        ); 
     }
 
     deleteSubject(id: string) {
@@ -41,7 +41,9 @@ export class SubjectService {
         let params = new HttpParams()
             .append('page', page)
             .append('limit', 10)
-            .append('sort', 'name');
+            .append('sort', 'name')
+            .append('order', 'DESC');
+            
 
         if (search) {
             params = params.append('search', search);

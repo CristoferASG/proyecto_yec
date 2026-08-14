@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {FieldTree, form, FormField} from "@angular/forms/signals";
 import {InputText} from "primeng/inputtext";
 import {Select} from 'primeng/select';
@@ -35,19 +35,16 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
     protected readonly catalogueService = inject(CatalogueService);
     private readonly careerService = inject(CareerService);
 
-    protected readonly form$: WritableSignal<SubjectState> = signal(this.subjectCreateStore.formState());
+    /** El form$ apunta DIRECTAMENTE al signal del store (no es una copia).
+     *  Esto garantiza que cada carga de datos del back sobreescriba el estado
+     *  y que no se quede "pegado" con el dato de un registro anterior. */
+    protected readonly form$: WritableSignal<SubjectState> = this.subjectCreateStore.formState;
     protected readonly formData: FieldTree<SubjectState> = this.buildForm();
-    private formInitialized: boolean = false;
 
     // Catálogos para los p-select (opciones). El form guarda el ID en formData.academicPeriodId/typeId/careerId.
     protected readonly academicPeriods = signal<CatalogueInterface[]>([]);
     protected readonly types = signal<CatalogueInterface[]>([]);
     protected readonly careers = signal<CareerInterface[]>([]);
-
-    constructor() {
-        this.initializeData();
-        this.watchFormChanges();
-    }
 
     ngOnInit(): void {
         this.formRegistryService.register(
@@ -62,23 +59,6 @@ export class SubjectFormComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.formRegistryService.unregister(FORM_STATE_KEY);
-    }
-
-    private initializeData(): void {
-        effect(() => {
-            const data = this.subjectCreateStore.formState();
-
-            if (!this.formInitialized) {
-                this.form$.set(data);
-                this.formInitialized = true;
-            }
-        });
-    }
-
-    private watchFormChanges(): void {
-        effect(() => {
-            this.subjectCreateStore.updateState(this.form$());
-        });
     }
 
     private buildForm(): FieldTree<SubjectState> {

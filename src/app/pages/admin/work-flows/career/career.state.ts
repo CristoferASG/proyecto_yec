@@ -18,9 +18,12 @@ export interface CareerState {
 export interface CareerInterface {
     id: string;
     code: string;
+    name: string;
     shortName: string;
     logo: string;
     resolutionNumber: string;
+    modalityId?: string;
+    typeId?: string;
 }
 
 /** Opción del select de institución (para el formulario). */

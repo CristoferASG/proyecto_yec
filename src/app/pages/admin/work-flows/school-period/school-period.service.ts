@@ -65,7 +65,8 @@ export class SchoolPeriodService {
         let params = new HttpParams()
             .append('page', page)
             .append('limit', 10)
-            .append('sort', 'name');
+            .append('sort', 'startedAt')
+            .append('order', 'DESC');
 
         if (search) {
             params = params.append('search', search);

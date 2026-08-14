@@ -1,4 +1,5 @@
 import {Component, inject, input, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 import {Button} from "primeng/button";
 import {FormRegistryService} from "@utils/services/form-registry.service";
 import {MY_ROUTES} from "@routes";
@@ -22,6 +23,7 @@ export class CareerContainerComponent implements OnInit {
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly customMessageService = inject(CustomMessageService);
+    private readonly router = inject(Router);
     protected readonly careerCreateStore = inject(CareerStore);
     protected readonly careerRegistrationService = inject(CareerService);
     protected readonly CustomIcons = CustomIcons;
@@ -43,6 +45,7 @@ export class CareerContainerComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.careerCreateStore.reset();
         if (this.id() !== 'new') this.loadData();
     }
 
@@ -78,14 +81,16 @@ export class CareerContainerComponent implements OnInit {
 
     private create(payload: CareerState) {
         this.careerRegistrationService.createCareer(payload).subscribe({
-            next: (response) => {
+            next: () => {
+                this.router.navigateByUrl(MY_ROUTES.adminPages.career.absolute);
             }
         });
     }
 
     private update(payload: CareerState) {
         this.careerRegistrationService.updateCareer(this.id(), payload).subscribe({
-            next: (response) => {
+            next: () => {
+                this.router.navigateByUrl(MY_ROUTES.adminPages.career.absolute);
             }
         });
     }

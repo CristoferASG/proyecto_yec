@@ -50,11 +50,11 @@ export enum CatalogueTypeEnum {
     process_guides_professional_type = 'process_guides_professional_type',
     external_inactivation_causes = 'external_inactivation_causes',
     guide_inactivation_causes = 'guide_inactivation_causes',
-    careers_modality = 'careers_modality',
-    careers_type = 'careers_type',
+    careers_modality = 'CAREER_MODALITY',
+    careers_type = 'CAREERS_TYPE',
     school_period_state = 'school_period_state',
-    academic_period = 'academic_period',
-    subject_type = 'subject_type'
+    academic_period = 'ACADEMIC_PERIOD',
+    subject_type = 'SUBJECTS_TYPE',
 }
 
 export enum CatalogueStateEnum {

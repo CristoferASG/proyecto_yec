@@ -1,4 +1,5 @@
 import {Component, inject, input, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 import {Button} from "primeng/button";
 import {FormRegistryService} from "@utils/services/form-registry.service";
 import {MY_ROUTES} from "@routes";
@@ -22,6 +23,7 @@ export class InstitutionContainerComponent implements OnInit {
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly customMessageService = inject(CustomMessageService);
+    private readonly router = inject(Router);
     protected readonly institutionCreateStore = inject(InstitutionStore);
     protected readonly institutionService = inject(InstitutionService);
     protected readonly CustomIcons = CustomIcons;
@@ -43,6 +45,7 @@ export class InstitutionContainerComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.institutionCreateStore.reset();
         if (this.id() !== 'new') this.loadData();
     }
 
@@ -71,14 +74,16 @@ export class InstitutionContainerComponent implements OnInit {
 
     private create(payload: InstitutionState) {
         this.institutionService.createInstitution(payload).subscribe({
-            next: (response) => {
+            next: () => {
+                this.router.navigateByUrl(MY_ROUTES.adminPages.institution.absolute);
             }
         });
     }
 
     private update(payload: InstitutionState) {
         this.institutionService.updateInstitution(this.id(), payload).subscribe({
-            next: (response) => {
+            next: () => {
+                this.router.navigateByUrl(MY_ROUTES.adminPages.institution.absolute);
             }
         });
     }

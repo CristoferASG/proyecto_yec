@@ -1,5 +1,6 @@
 import {Component, inject, input, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
+import {Router} from "@angular/router";
 import {FormRegistryService} from "@utils/services/form-registry.service";
 import {MY_ROUTES} from "@routes";
 import {CustomIcons} from "@utils/icons/custom-icons";
@@ -22,6 +23,7 @@ export class SchoolPeriodContainerComponent implements OnInit {
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly customMessageService = inject(CustomMessageService);
+    private readonly router = inject(Router);
     protected readonly schoolPeriodCreateStore = inject(SchoolPeriodStore);
     protected readonly schoolPeriodService = inject(SchoolPeriodService);
     protected readonly CustomIcons = CustomIcons;
@@ -43,13 +45,18 @@ export class SchoolPeriodContainerComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.schoolPeriodCreateStore.reset();
         if (this.id() !== 'new') this.loadData();
     }
 
     private loadData() {
         this.schoolPeriodService.findSchoolPeriod(this.id()).subscribe({
-            next: (response) => {
-                this.schoolPeriodCreateStore.updateState(response);
+            next: (response: any) => {
+                // El backend trae institution como relación (objeto); el store guarda el ID plano.
+                this.schoolPeriodCreateStore.updateState({
+                    ...response,
+                    institutionId: response.institution?.id ?? ''
+                });
             }
         });
     }
@@ -71,14 +78,16 @@ export class SchoolPeriodContainerComponent implements OnInit {
 
     private create(payload: SchoolPeriodState) {
         this.schoolPeriodService.createSchoolPeriod(payload).subscribe({
-            next: (response) => {
+            next: () => {
+                this.router.navigateByUrl(MY_ROUTES.adminPages.schoolPeriod.absolute);
             }
         });
     }
 
     private update(payload: SchoolPeriodState) {
         this.schoolPeriodService.updateSchoolPeriod(this.id(), payload).subscribe({
-            next: (response) => {
+            next: () => {
+                this.router.navigateByUrl(MY_ROUTES.adminPages.schoolPeriod.absolute);
             }
         });
     }

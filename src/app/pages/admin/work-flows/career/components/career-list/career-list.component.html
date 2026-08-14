@@ -24,12 +24,6 @@
                     </p-input-group>
                 </div>
 
-                <div class="custom-form-field-row md:col-span-12 justify-start">
-                    <p-button label="Acción 1" [icon]="CustomIcons.DOWNLOAD_SOLID" severity="success"/>
-                    <p-button label="Acción 2" [icon]="CustomIcons.FILE_PDF_SOLID" severity="danger"/>
-                    <p-button label="Acción 3" [icon]="CustomIcons.FILE_AUDIO_SOLID" severity="info"/>
-                </div>
-
                 <div class="custom-form-field md:col-span-12">
                     <p-paginator
                         (onPageChange)="onPageChange($event)"
@@ -42,10 +36,11 @@
 
     <ng-template #header>
         <tr>
-            <th>Code</th>
-            <th>Shortname</th>
-            <th>Logo</th>
-            <th>Resolution Number</th>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Nombre Corto</th>
+            <th>Modalidad</th>
+            <th>Tipo</th>
             <th>
                 <p-button
                     pTooltip="Crear"
@@ -63,14 +58,10 @@
         let-rowIndex="rowIndex">
         <tr>
             <td>{{ item.code }}</td>
+            <td>{{ item.name }}</td>
             <td>{{ item.shortName }}</td>
-            <td>
-                <img
-                    [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + item.logo"
-                    [alt]="item.logo"
-                    class="w-24 rounded"/>
-            </td>
-            <td>{{ item.resolutionNumber }}</td>
+            <td>{{ catalogueName(CatalogueTypeEnum.careers_modality, item.modalityId) }}</td>
+            <td>{{ catalogueName(CatalogueTypeEnum.careers_type, item.typeId) }}</td>
             <td>
                 <p-button
                     pTooltip="Gestionar"

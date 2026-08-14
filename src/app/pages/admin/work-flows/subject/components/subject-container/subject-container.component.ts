@@ -1,5 +1,6 @@
 import {Component, inject, input, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
+import {Router} from "@angular/router";
 import {FormRegistryService} from "@utils/services/form-registry.service";
 import {MY_ROUTES} from "@routes";
 import {CustomIcons} from "@utils/icons/custom-icons";
@@ -22,6 +23,7 @@ export class SubjectContainerComponent implements OnInit {
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly formRegistryService = inject(FormRegistryService);
     private readonly customMessageService = inject(CustomMessageService);
+    private readonly router = inject(Router);
     protected readonly subjectCreateStore = inject(SubjectStore);
     protected readonly subjectService = inject(SubjectService);
     protected readonly CustomIcons = CustomIcons;
@@ -43,6 +45,8 @@ export class SubjectContainerComponent implements OnInit {
     }
 
     ngOnInit() {
+        // Si entramos en modo "new" limpiamos el store para que el form arranque vacío.
+        this.subjectCreateStore.reset();
         if (this.id() !== 'new') this.loadData();
     }
 
@@ -71,14 +75,16 @@ export class SubjectContainerComponent implements OnInit {
 
     private create(payload: SubjectState) {
         this.subjectService.createSubject(payload).subscribe({
-            next: (response) => {
+            next: () => {
+                this.router.navigateByUrl(MY_ROUTES.adminPages.subject.absolute);
             }
         });
     }
 
     private update(payload: SubjectState) {
         this.subjectService.updateSubject(this.id(), payload).subscribe({
-            next: (response) => {
+            next: () => {
+                this.router.navigateByUrl(MY_ROUTES.adminPages.subject.absolute);
             }
         });
     }

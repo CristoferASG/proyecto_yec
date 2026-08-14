@@ -13,8 +13,7 @@ import {ConfirmationService, MenuItem} from "primeng/api";
 import {Tooltip} from "primeng/tooltip";
 import {
     deleteButtonAction,
-    editButtonAction,
-    viewButtonAction
+    editButtonAction
 } from "@utils/components/button-action/consts";
 import {Router} from "@angular/router";
 import {MY_ROUTES} from "@routes";
@@ -72,12 +71,8 @@ export class InstitutionListComponent implements OnInit {
         const actions: MenuItem[] = [];
 
         actions.push({
-            ...viewButtonAction,
-            command: () => this.goToCreate()
-        });
-
-        actions.push({
             ...editButtonAction,
+            label: 'Ver/Editar',
             command: () => this.goToEdit(item)
         });
 

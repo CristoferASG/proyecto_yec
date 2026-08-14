@@ -13,12 +13,13 @@ import {ConfirmationService, MenuItem} from "primeng/api";
 import {Tooltip} from "primeng/tooltip";
 import {
     deleteButtonAction,
-    editButtonAction,
-    viewButtonAction
+    editButtonAction
 } from "@utils/components/button-action/consts";
 import {Router} from "@angular/router";
 import {MY_ROUTES} from "@routes";
 import {debouncedSignal} from "@utils/helpers";
+import {CatalogueService} from "@utils/services";
+import {CatalogueTypeEnum} from "@utils/enums";
 
 @Component({
     selector: 'app-career-form-list',
@@ -37,7 +38,15 @@ export class CareerListComponent implements OnInit {
     private readonly router = inject(Router);
     protected readonly careerService = inject(CareerService);
     private readonly confirmationService = inject(ConfirmationService);
+    private readonly catalogueService = inject(CatalogueService);
     protected readonly CustomIcons = CustomIcons;
+    protected readonly CatalogueTypeEnum = CatalogueTypeEnum;
+
+    /** Resuelve el nombre legible de un catálogo (modalidad/tipo) desde el caché por su id. */
+    protected catalogueName(type: CatalogueTypeEnum, id?: string): string {
+        if (!id) return '—';
+        return this.catalogueService.findByType(type).find(c => c.id === id)?.name ?? '—';
+    }
 
     protected items = signal<CareerInterface[]>([]);
     protected search = signal('');
@@ -73,12 +82,8 @@ export class CareerListComponent implements OnInit {
         const actions: MenuItem[] = [];
 
         actions.push({
-            ...viewButtonAction,
-            command: () => this.goToCreate()
-        });
-
-        actions.push({
             ...editButtonAction,
+            label: 'Ver/Editar',
             command: () => this.goToEdit(item)
         });
 

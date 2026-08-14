@@ -14,8 +14,7 @@ import {Tooltip} from "primeng/tooltip";
 import {
     activateButtonAction,
     deleteButtonAction,
-    editButtonAction,
-    viewButtonAction
+    editButtonAction
 } from "@utils/components/button-action/consts";
 import {Router} from "@angular/router";
 import {MY_ROUTES} from "@routes";
@@ -88,12 +87,8 @@ export class SchoolPeriodListComponent implements OnInit {
         const isOpen = item.id === this.openPeriodId();
 
         actions.push({
-            ...viewButtonAction,
-            command: () => this.goToCreate()
-        });
-
-        actions.push({
             ...editButtonAction,
+            label: 'Ver/Editar',
             command: () => this.goToEdit(item)
         });
 

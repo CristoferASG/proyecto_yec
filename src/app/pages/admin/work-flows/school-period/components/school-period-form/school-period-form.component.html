@@ -62,6 +62,7 @@
             <small [appErrorMessage]="$any(formData.shortName)"></small>
         </div>
 
+
         <!-- Inicio del periodo -->
         <div class="custom-form-field md:col-span-6">
             <label
@@ -71,7 +72,7 @@
                 [field]="formData.startedAt">
             </label>
 
-            <input type="date" id="startedAt" [formField]="formData.startedAt">
+            <input type="date" class="custom-date-input" id="startedAt" [formField]="formData.startedAt">
 
             <small [appErrorMessage]="$any(formData.startedAt)"></small>
         </div>
@@ -85,7 +86,7 @@
                 [field]="formData.endedAt">
             </label>
 
-            <input type="date" id="endedAt" [formField]="formData.endedAt">
+            <input type="date" class="custom-date-input" id="endedAt" [formField]="formData.endedAt">
 
             <small [appErrorMessage]="$any(formData.endedAt)"></small>
         </div>
@@ -99,7 +100,7 @@
                 [field]="formData.ordinaryStartedAt">
             </label>
 
-            <input type="date" id="ordinaryStartedAt" [formField]="formData.ordinaryStartedAt">
+            <input type="date" class="custom-date-input" id="ordinaryStartedAt" [formField]="formData.ordinaryStartedAt">
 
             <small [appErrorMessage]="$any(formData.ordinaryStartedAt)"></small>
         </div>
@@ -113,7 +114,7 @@
                 [field]="formData.ordinaryEndedAt">
             </label>
 
-            <input type="date" id="ordinaryEndedAt" [formField]="formData.ordinaryEndedAt">
+            <input type="date" class="custom-date-input" id="ordinaryEndedAt" [formField]="formData.ordinaryEndedAt">
 
             <small [appErrorMessage]="$any(formData.ordinaryEndedAt)"></small>
         </div>
@@ -127,7 +128,7 @@
                 [field]="formData.extraOrdinaryStartedAt">
             </label>
 
-            <input type="date" id="extraOrdinaryStartedAt" [formField]="formData.extraOrdinaryStartedAt">
+            <input type="date" class="custom-date-input" id="extraOrdinaryStartedAt" [formField]="formData.extraOrdinaryStartedAt">
 
             <small [appErrorMessage]="$any(formData.extraOrdinaryStartedAt)"></small>
         </div>
@@ -141,7 +142,7 @@
                 [field]="formData.extraOrdinaryEndedAt">
             </label>
 
-            <input type="date" id="extraOrdinaryEndedAt" [formField]="formData.extraOrdinaryEndedAt">
+            <input type="date" class="custom-date-input" id="extraOrdinaryEndedAt" [formField]="formData.extraOrdinaryEndedAt">
 
             <small [appErrorMessage]="$any(formData.extraOrdinaryEndedAt)"></small>
         </div>
@@ -155,7 +156,7 @@
                 [field]="formData.especialStartedAt">
             </label>
 
-            <input type="date" id="especialStartedAt" [formField]="formData.especialStartedAt">
+            <input type="date" class="custom-date-input" id="especialStartedAt" [formField]="formData.especialStartedAt">
 
             <small [appErrorMessage]="$any(formData.especialStartedAt)"></small>
         </div>
@@ -169,9 +170,31 @@
                 [field]="formData.especialEndedAt">
             </label>
 
-            <input type="date" id="especialEndedAt" [formField]="formData.especialEndedAt">
+            <input type="date" class="custom-date-input" id="especialEndedAt" [formField]="formData.especialEndedAt">
 
             <small [appErrorMessage]="$any(formData.especialEndedAt)"></small>
+        </div>
+
+        <!-- Institución -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="institution"
+                label="Institución"
+                [field]="formData.institutionId">
+            </label>
+
+            <p-select
+                id="institution"
+                dataKey="id"
+                [formField]="$any(formData.institutionId)"
+                [options]="institutions()"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Seleccione">
+            </p-select>
+
+            <small [appErrorMessage]="$any(formData.institutionId)"></small>
         </div>
 
     </form>
