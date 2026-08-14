@@ -85,6 +85,9 @@ async function bootstrap() {
 
   app.enableCors();
 
+  //3MB para que el logo base64 respete el límite de 2MB del front sin 413, revisar con el ingeniero si esto se queda o se va
+  app.useBodyParser('json', { limit: '3mb' });
+
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   app.useGlobalFilters(new AllExceptionsFilter());

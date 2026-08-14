@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import {
   CareerToTeacherEntity,
   CatalogueEntity,
@@ -50,6 +51,7 @@ export class CareerEntity {
   })
   deletedAt: Date;
 
+  @Exclude()
   @Column({
     name: 'is_visible',
     type: 'boolean',
@@ -58,6 +60,7 @@ export class CareerEntity {
   })
   isVisible: boolean;
 
+  @Exclude()
   @Column({
     name: 'is_enabled',
     type: 'boolean',
@@ -114,12 +117,14 @@ export class CareerEntity {
   @Column({ type: 'uuid', name: 'modality_id', comment: 'Presencial, Distancia, Hibrida, etc' })
   modalityId: string;
 
+  @Exclude()
   @ManyToOne(() => CatalogueEntity, {
     nullable: true,
   })
   @JoinColumn({ name: 'state_id' })
   state: CatalogueEntity;
 
+  @Exclude()
   @Column({ type: 'uuid', name: 'state_id', nullable: true, comment: 'Habilitada o Inhabilitada' })
   stateId: string;
 
@@ -164,9 +169,9 @@ export class CareerEntity {
 
   @Column({
     name: 'logo',
-    type: 'varchar',
+    type: 'text',
     nullable: true,
-    comment: 'Logo de la carrera',
+    comment: 'Logo de la carrera como data-URL base64',
   })
   logo: string;
 

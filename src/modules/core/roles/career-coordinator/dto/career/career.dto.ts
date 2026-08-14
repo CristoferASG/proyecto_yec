@@ -1,5 +1,18 @@
-import { IsNotEmpty, IsOptional, IsString, IsUUID, MinLength } from 'class-validator';
-import { isNotEmptyValidationOptions, isStringValidationOptions, minLengthValidationOptions } from '@utils/dto-validation';
+import { IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  isNotEmptyValidationOptions,
+  isStringValidationOptions,
+  maxLengthValidationOptions,
+  minLengthValidationOptions,
+} from '@utils/dto-validation';
+
+/** 2 MB (binario) ≈ 2_700_000 caracteres base64: tope para el logo embebido. */
+const LOGO_MAX_LENGTH = 2_700_000;
+
+/** Convierte "" (front, sin selección en el combo) en undefined para que @IsOptional lo trate como ausente. */
+const emptyStringToUndefined = ({ value }: { value: unknown }) =>
+  value === '' ? undefined : value;
 
 export class CareerDto {
   @IsOptional()
@@ -7,10 +20,12 @@ export class CareerDto {
   institutionId: string;
 
   @IsOptional()
+  @Transform(emptyStringToUndefined, { toClassOnly: true })
   @IsUUID(undefined, { message: 'El campo modalityId debe ser un UUID válido' })
   modalityId: string;
 
   @IsOptional()
+  @Transform(emptyStringToUndefined, { toClassOnly: true })
   @IsUUID(undefined, { message: 'El campo typeId debe ser un UUID válido' })
   typeId: string;
 
@@ -32,6 +47,7 @@ export class CareerDto {
 
   @IsOptional()
   @IsString(isStringValidationOptions())
+  @MaxLength(LOGO_MAX_LENGTH, maxLengthValidationOptions())
   logo: string;
 
   @IsString(isStringValidationOptions())
@@ -43,6 +59,6 @@ export class CareerDto {
   resolutionNumber: string;
 
   @IsString(isStringValidationOptions())
-  @MinLength(3, minLengthValidationOptions())
+  @MinLength(2, minLengthValidationOptions())
   shortName: string;
 }

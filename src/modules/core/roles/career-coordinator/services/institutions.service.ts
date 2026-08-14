@@ -74,16 +74,6 @@ export class InstitutionsService {
     await this.repository.softRemove(entity);
   }
 
-  async findByCode(code: string): Promise<InstitutionEntity> {
-    const entity = await this.repository.findOne({ where: { code } });
-
-    if (!entity) {
-      throw new NotFoundException('La institución no se encontró');
-    }
-
-    return entity;
-  }
-
   private async validateUniqueFields(
     payload: CreateInstitutionDto | UpdateInstitutionDto,
     id?: string,

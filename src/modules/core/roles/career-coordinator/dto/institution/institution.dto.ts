@@ -1,10 +1,14 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import {
   isEmailValidationOptions,
   isNotEmptyValidationOptions,
   isStringValidationOptions,
+  maxLengthValidationOptions,
   minLengthValidationOptions,
 } from '@utils/dto-validation';
+
+/** 2 MB (binario) ≈ 2_700_000 caracteres base64: tope para el logo embebido. */
+const LOGO_MAX_LENGTH = 2_700_000;
 
 export class InstitutionDto {
   @IsString(isStringValidationOptions())
@@ -38,6 +42,7 @@ export class InstitutionDto {
 
   @IsOptional()
   @IsString(isStringValidationOptions())
+  @MaxLength(LOGO_MAX_LENGTH, maxLengthValidationOptions())
   logo: string;
 
   @IsOptional()

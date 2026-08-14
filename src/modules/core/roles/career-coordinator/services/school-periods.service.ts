@@ -91,13 +91,12 @@ export class SchoolPeriodsService {
     });
 
     if (existOpen) {
-      throw new BadRequestException(
-        `${MessageEnum.EXISTS_OPEN_SCHOOL_PERIOD} (${existOpen.name})`,
-      );
+      throw new BadRequestException(`${MessageEnum.EXISTS_OPEN_SCHOOL_PERIOD} (${existOpen.name})`);
     }
 
     const stateOpen = await this.findStateByCode(CatalogueSchoolPeriodStateEnum.open);
     entity.stateId = stateOpen.id;
+    entity.state = stateOpen;
 
     return await this.repository.save(entity);
   }
@@ -111,6 +110,7 @@ export class SchoolPeriodsService {
 
     const stateClose = await this.findStateByCode(CatalogueSchoolPeriodStateEnum.close);
     entity.stateId = stateClose.id;
+    entity.state = stateClose;
 
     return await this.repository.save(entity);
   }

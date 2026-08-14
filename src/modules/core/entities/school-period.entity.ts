@@ -11,6 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CatalogueEntity, InstitutionEntity } from '@modules/core/entities';
+import { Exclude } from 'class-transformer';
 import { getDateFormat } from '@utils/helpers';
 
 @Entity('school_periods', { schema: 'core' })
@@ -42,6 +43,7 @@ export class SchoolPeriodEntity {
   })
   deletedAt: Date;
 
+  @Exclude()
   @Column({
     name: 'is_visible',
     type: 'boolean',
@@ -63,9 +65,12 @@ export class SchoolPeriodEntity {
   })
   institutionId: string;
 
+  @Exclude()
   @ManyToOne(() => CatalogueEntity)
   @JoinColumn({ name: 'state_id' })
   state: CatalogueEntity;
+
+  @Exclude()
   @Column({ type: 'uuid', name: 'state_id', comment: 'Habilitado o Inhabilitado' })
   stateId: string;
 

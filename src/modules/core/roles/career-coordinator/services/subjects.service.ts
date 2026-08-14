@@ -84,16 +84,6 @@ export class SubjectsService {
     });
   }
 
-  async findByCode(code: string): Promise<SubjectEntity> {
-    const entity = await this.repository.findOne({ where: { code } });
-
-    if (!entity) {
-      throw new NotFoundException('La asignatura no se encontró');
-    }
-
-    return entity;
-  }
-
   private async validateUniqueFields(
     payload: CreateSubjectDto | UpdateSubjectDto,
     id?: string,

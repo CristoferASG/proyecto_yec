@@ -72,7 +72,7 @@ export class InstitutionEntity {
   @ManyToOne(() => CatalogueEntity)
   @JoinColumn({ name: 'state_id' })
   state: CatalogueEntity;
-  @Column({ type: 'uuid', name: 'state_id', comment: 'Habilitado o Inhabilitado' })
+  @Column({ type: 'uuid', name: 'state_id', nullable: true, comment: 'Habilitado o Inhabilitado' })
   stateId: string;
 
   /** Columns **/
@@ -123,9 +123,9 @@ export class InstitutionEntity {
 
   @Column({
     name: 'logo',
-    type: 'varchar',
+    type: 'text',
     nullable: true,
-    comment: 'logo que identifica al instituto',
+    comment: 'Logo de la institución como base64',
   })
   logo: string;
 

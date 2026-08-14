@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Exclude } from 'class-transformer';
 import { CareerEntity, CatalogueEntity, SubjectCorequisiteEntity, SubjectPrerequisiteEntity } from '@modules/core/entities';
 
 @Entity('subjects', { schema: 'core' })
@@ -27,6 +28,7 @@ export class SubjectEntity {
   })
   deletedAt: Date;
 
+  @Exclude()
   @Column({
     name: 'is_visible',
     type: 'boolean',
@@ -35,6 +37,7 @@ export class SubjectEntity {
   })
   isVisible: boolean;
 
+  @Exclude()
   @Column({
     name: 'is_enabled',
     type: 'boolean',
@@ -63,9 +66,12 @@ export class SubjectEntity {
   @Column({ type: 'uuid', name: 'career_id', nullable: true, comment: 'Career' })
   careerId: string;
 
+  @Exclude()
   @ManyToOne(() => CatalogueEntity, { nullable: true })
   @JoinColumn({ name: 'state_id' })
   state: CatalogueEntity;
+
+  @Exclude()
   @Column({ type: 'uuid', name: 'state_id', nullable: true, comment: 'Habilitado o Inhabilitado' })
   stateId: string;
 
